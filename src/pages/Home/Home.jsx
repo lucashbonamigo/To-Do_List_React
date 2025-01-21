@@ -34,9 +34,9 @@ const Home = () => {
         {tarefas.map((tarefa, index) => (
           <>
             <li key={index} className='item'>
-                <input type='checkbox' className='modal'/>
-                <p className='text'>{tarefa}</p>
-            < button className='buttonX' onClick={() => remove(tarefa)}>X</button>
+              <input type='checkbox' className='modal'/>
+              <p className='text'>{tarefa}</p>
+              < button className='buttonX' onClick={() => remove(tarefa)}>X</button>
             </li>
           </>
         ))}
