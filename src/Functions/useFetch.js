@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
 
 export const useFetch = (url) => {
-    const [data, setData] = useState("");
+    const [data, setData] = useState(null);
     const [config, setConfig] = useState("");
-    const [method, setMethod] = useState("");
+    const [method, setMethod] = useState(null);
     const [callFetch, setCallFetch] = useState(false);
-    const [itemId, setItemId] = useState("");
+    const [itemId, setItemId] = useState(null);
+    const [error, setError] = useState(null);
 
-    const httpconfig = (data, method) =>{
+    const httpConfig = (data, method) =>{
         if(method === 'POST'){
             setConfig({
                 method,
                 headers: {
-                    "Content-Type": "aplication/json"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
             });
@@ -30,35 +31,53 @@ export const useFetch = (url) => {
     };
 
     //requisição GET
-    useEffect(() =>{
-        const fetchData = async () =>{
-            const res = fetch(url);
-            const data = await res.json();
-
-            setData(data);
-        }
-        fetchData();
-    },[url, callFetch])
-
+  
     //requisição POST
-    useEffect(()=>{
-        let json;
-        let res;
-        const httpRequest = async () =>{
-            if (method === 'POST'){
-                let fetchOptions = [url, config];
-                res = await fetch(...fetchOptions);
-                json = await res.json();
-            }else if(method === 'DELETE'){
-                const DeleteUrl = `${url}/${itemId}`
-                res = await fetch(DeleteUrl);
-                json = await res.json();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+              const res = await fetch('http://localhost:5000/Login  ');
+              // Verifique se a resposta é JSON antes de usar res.json()
+              if (!res.ok) {
+                throw new Error(`Erro na requisição: ${res.status}`);
+              }
+              const data = await res.json();
+              console.log(data); // Agora você pode usar a resposta JSON
+            } catch (error) {
+              console.error('Erro ao buscar dados:', error);
             }
-            setCallFetch(json);
-        }
+          };
+          
+          fetchData();
+      }, [url, callFetch]);
+    
+      // Requisição POST ou DELETE
+      useEffect(() => {
+        const httpRequest = async () => {
+          if (!config || !method) return; // Certifique-se de que há uma configuração válida
+    
+          try {
+            let res;
+            if (method === "POST") {
+              res = await fetch(url, config);
+            } else if (method === "DELETE") {
+              const deleteUrl = `${url}/${itemId}`;
+              res = await fetch(deleteUrl, config);
+            }
+    
+            if (!res.ok) throw new Error(`Erro: ${res.status}`);
+            const json = await res.json();
+            setData(json);
+            setError(null);
+          } catch (err) {
+            setError(err.message);
+            setData(null);
+          }
+        };
         httpRequest();
-    },[config, method, url])
-  return {data, httpconfig}
-}
+    }, [config, method, url, itemId]);
+    
+      return { data, httpConfig, error };
+};
 
 export default useFetch
