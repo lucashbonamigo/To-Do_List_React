@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 export const logado = false;
 
 const Login = () => {
-  const urlNewUser = "http://localhost:5000/newUser";
   const urlLogin = "http://localhost:5000/Login";
 
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
-  const { data, httpConfig } = useFetch(urlLogin);
+  const {callFetch, data, httpConfig } = useFetch(urlLogin);
   const Navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
