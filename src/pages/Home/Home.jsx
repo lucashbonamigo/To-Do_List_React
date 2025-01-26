@@ -1,5 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import useFetch from "../../Functions/useFetch";
+import { Field } from "../../components/ui/field.jsx"
+import { HiHeart } from "react-icons/md"
+
+import {
+  Button,
+  Heading,
+  Input,
+  Flex,
+  Text,
+  List,
+  Center
+} from '@chakra-ui/react'
 
 const Home = () => {
   const url = "http://localhost:5000/addTask";
@@ -35,7 +47,7 @@ const Home = () => {
 
     httpConfig(task, "POST"); // Faz a requisição POST para adicionar tarefa
     setNovaTarefa(""); // Reseta o input de tarefa
-    setTrigger((trigger)=> trigger + 1);
+    setTrigger((trigger) => trigger + 1);
     ref.current.focus(); // Retorna o foco ao input de texto
   };
 
@@ -53,49 +65,55 @@ const Home = () => {
   };
 
   return (
-    <div className="body">
-      <h1 className="title">To-Do List</h1>
-
-      {/* Formulário para adicionar nova tarefa */}
-      <form onSubmit={adicionar1}>
-        <input
+    <Flex className="body">
+      <Heading size={'5xl'} >To-Do List Ract</Heading>
+      <form onSubmit={adicionar1} className="form">
+        <Field label={'Adicionar tarefa'} mt={'2em'}>
+        <Input
           ref={ref}
-          className="digitadd"
+          variant={"flushed"}
+          mb={'1em'}
           required
           type="text"
-          placeholder="Adicione uma tarefa"
+          placeholder="Cozinhar Almoço"
           value={novaTarefa}
           onChange={(e) => setNovaTarefa(e.target.value)}
         />
-        <input
-          type="date"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-          className="deadline-input"
-        />
-        <input type="submit" value="Adicionar" className="submit-button" />
+        </Field>
+        <Field label={'Deadline'}>
+          <Input
+            type="date"
+            variant={"flushed"}
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className="deadline-input"
+          />
+        </Field>
+        <Button type="submit" value="Adicionar" disabled={!novaTarefa} w={'100%'} marginX={'auto'} mt={`1em`} mb={'2em'} className="submit-button">  
+          +
+        </Button>
       </form>
 
       {/* Lista de tarefas */}
       {tarefas.length > 0 && (
-        <ul className="items">
+        <List.Root>
           {tarefas.map((tarefa, index) => (
-            <li key={index} className="item">
-              <input type="checkbox" className="modal" />
-              <p className="text">
+            <List.Item key={index} w={'90vw'} maxW={`900px`} background={'gray'} pl={`.3em`} mb={'.2em'} mt={'.5'} display={'flex'} alignItems={'Center'}>
+              <input type="checkbox"/>
+              <Text className="text" w={'100%'} ml={'.5em'} >
                 {tarefa.task} {/* <small>{tarefa.deadline}</small> */}
-              </p>
-              <button className="buttonX" onClick={() => remove(tarefa.id)}>
+              </Text>
+              <Button variant={"solid"} alignSelf={'end'} className="buttonX" onClick={() => remove(tarefa.id)}>
                 X
-              </button>
-            </li>
+              </Button >
+            </List.Item>
           ))}
-        </ul>
+        </List.Root>
       )}
 
       {/* Exibir mensagem caso não haja tarefas */}
       {tarefas.length === 0 && <p className="no-tasks">Nenhuma tarefa adicionada ainda.</p>}
-    </div>
+    </Flex>
   );
 };
 
