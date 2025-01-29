@@ -1,20 +1,19 @@
 import { useState } from "react";
-import { useFetch } from "../../Functions/useFetch";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../Functions/UserContext";
+import usePost from "../../Functions/usePost";
 
 export const logado = false;
 
 const Login = () => {
   const urlLogin = "http://localhost:5000/Login";
-  const [usuario, setUsuario] = useState("");
-  const [pass, setPass] = useState("");
-  const { data, httpConfig } = useFetch(urlLogin);
+  const [usuario, setUsuario] = useState("Luckkkkas");
+  const [pass, setPass] = useState("SKOI7617");
+  const { dataPost, httpConfigPost } = usePost(urlLogin);
   const Navigate = useNavigate(); 
   const {setUser, setLogged} = useContext(UserContext);
   
-  setUser(data);
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o comportamento padrão do formulário
 
@@ -28,13 +27,13 @@ const Login = () => {
       pass,
     };
 
-    // Configura a requisição POST usando o hook
-    httpConfig(user1, "POST");
+    httpConfigPost(user1, "POST");
   };
 
   // Monitora o retorno da API
-  if (data) {
-    if (data.message === "Success") {
+  if (dataPost) {
+    if (dataPost.message === "Success") {
+      setUser(dataPost);
       setLogged(true);
       Navigate('/')
     }

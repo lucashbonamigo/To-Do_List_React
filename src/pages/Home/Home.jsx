@@ -1,87 +1,104 @@
-import React, { useEffect, useState, useRef } from "react";
-import useFetch from "../../Functions/useFetch";
-import { Field } from "../../components/ui/field.jsx"
+import React, { useEffect, useState, useRef, useContext } from "react";
+import usePost from "../../Functions/usePost.js";
+import { Field } from "../../components/ui/field.jsx";
 
-import {
-  Button,
-  Heading,
-  Input,
-  Flex,
-  Text,
-  List,
-} from '@chakra-ui/react'
+import { Button, Heading, Input, Flex, Text, List } from "@chakra-ui/react";
 import { UserContext } from "../../Functions/UserContext";
+import useDelete from "../../Functions/useDelete.js";
+import useGet from "../../Functions/useGet.js";
+import usePut from "../../Functions/usePut.js";
 
 const Home = () => {
-  const url = "http://localhost:5000/addTask";
-  const [tarefas, setTarefas] = useState([]); // Lista de tarefas
-  const [novaTarefa, setNovaTarefa] = useState(""); // Nova tarefa a ser adicionada
-  const [deadline, setDeadline] = useState("01/01/2025"); // Prazo da tarefa
-  const { data, httpConfig } = useFetch(url); // Hook customizado para requisições
-  const ref = useRef(null); // Referência ao input de texto
+  const { user, logged } = useContext(UserContext);
+  const [userID, setUserID] = useState(null);
+  const [tarefas, setTarefas] = useState([]);
+  const [novaTarefa, setNovaTarefa] = useState("");
+  const [deadline, setDeadline] = useState("2025-01-01");
   const [trigger, setTrigger] = useState(0);
-  const {user} = useState(UserContext);
+  const { dataPut, httpConfigPut } = usePut('http://localhost:5000/Update');
+  const { dataPost, httpConfigPost } = usePost('http://localhost:5000/addTask');
+  const { dataDel, httpConfigDel } = useDelete('http://localhost:5000/Delete');
+  const { dataGet, httpConfigGet } = useGet(`http://localhost:5000/?id=${userID}`);
+  const ref = useRef(null);
 
-  console.log(user)
-  // Buscar tarefas ao carregar o componente
   useEffect(() => {
-    httpConfig(null, "GET"); // Faz a requisição GET para obter tarefas
-  }, [trigger]);
-
-  // Atualizar o estado `tarefas` sempre que os dados da API mudarem
-  useEffect(() => {
-    if (data) {
-      setTarefas(data); // Atualiza as tarefas com os dados recebidos
+    if (user && user.results && user.results[0]) {
+      setUserID(user.results[0].id);
     }
-  }, [data]);
+  }, [user]);
 
-  // Função para adicionar uma nova tarefa
+  useEffect(() => {
+    if (userID) {
+      httpConfigGet("GET");
+    }
+  }, [trigger, userID]);
+
+  useEffect(() => {
+    if (dataGet) {
+      setTarefas(dataGet);
+    }
+  }, [dataGet]);
+
   const adicionar1 = (e) => {
     e.preventDefault();
+    if (!novaTarefa.trim()) return;
 
-    if (novaTarefa.trim() === "") return; // Impede adição de tarefa vazia
-
-    const task = {
-      novaTarefa,
-      deadline,
-    };
-
-    httpConfig(task, "POST"); // Faz a requisição POST para adicionar tarefa
-    setNovaTarefa(""); // Reseta o input de tarefa
+    const task = { novaTarefa, deadline, userID, states: false };
+    httpConfigPost(task, "POST");
+    setNovaTarefa("");
     setTrigger((trigger) => trigger + 1);
-    ref.current.focus(); // Retorna o foco ao input de texto
+
+    if (ref.current) {
+      ref.current.focus();
+    }
   };
 
-  // Função para remover uma tarefa
   const remove = (tarefaParaRemover) => {
-    const filteredTarefas = tarefas.filter((tarefa) => tarefa.tarefa !== tarefaParaRemover.tarefa);
+    const filteredTarefas = tarefas.filter((tarefa) => tarefa.id !== tarefaParaRemover.id);
     setTarefas(filteredTarefas);
     setTrigger((prev) => prev + 1);
-    const task = {
-      tarefaParaRemover,
-      deadline,
-    };
 
-    httpConfig(task, "DELETE"); // Faz a requisição POST para adicionar tarefa
+    const task = { id: tarefaParaRemover.id };
+    httpConfigDel(task, "DELETE");
+  };
+
+  const handleCheckboxChange = (id) => {
+    setTarefas((prevTarefas) =>
+      prevTarefas.map((tarefa) =>
+        tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0 }
+          : tarefa
+      )
+    );
+
+    const taskbody = {
+      id
+    }
+    //fazer o update das infos checkadas aqui
+   httpConfigPut(taskbody, "PUT");
   };
 
   return (
     <Flex className="body">
-      <Heading size={'5xl'} >To-Do List Ract</Heading>
+      {user && user.results && user.results[0] ? (
+        <Heading size={"5xl"}>To-Do List React {user.results[0].user}</Heading>
+      ) : (
+        <Heading size={"5xl"}>Carregando...</Heading>
+      )}
+
       <form onSubmit={adicionar1} className="form">
-        <Field label={'Adicionar tarefa'} mt={'2em'}>
-        <Input
-          ref={ref}
-          variant={"flushed"}
-          mb={'1em'}
-          required
-          type="text"
-          placeholder="Cozinhar Almoço"
-          value={novaTarefa}
-          onChange={(e) => setNovaTarefa(e.target.value)}
-        />
+        <Field label={"Adicionar tarefa"} mt={"2em"}>
+          <Input
+            ref={ref}
+            variant={"flushed"}
+            mb={"1em"}
+            required
+            type="text"
+            placeholder="Cozinhar Almoço"
+            value={novaTarefa}
+            onChange={(e) => setNovaTarefa(e.target.value)}
+          />
         </Field>
-        <Field label={'Deadline'}>
+        <Field label={"Deadline"}>
           <Input
             type="date"
             variant={"flushed"}
@@ -90,30 +107,41 @@ const Home = () => {
             className="deadline-input"
           />
         </Field>
-        <Button type="submit" value="Adicionar" disabled={!novaTarefa} w={'100%'} marginX={'auto'} mt={`1em`} mb={'2em'} className="submit-button">  
+        <Button
+          type="submit"
+          value="Adicionar"
+          disabled={!novaTarefa.trim()}
+          w={"100%"}
+          marginX={"auto"}
+          mt={`1em`}
+          mb={"2em"}
+          className="submit-button"
+        >
           +
         </Button>
       </form>
 
-      {/* Lista de tarefas */}
-      {tarefas.length > 0 && (
+      {tarefas.length > 0 ? (
         <List.Root>
           {tarefas.map((tarefa, index) => (
-            <List.Item key={index} w={'90vw'} maxW={`900px`} background={'gray'} pl={`.3em`} mb={'.2em'} mt={'.5'} display={'flex'} alignItems={'Center'}>
-              <input type="checkbox"/>
-              <Text className="text" w={'100%'} ml={'.5em'} >
-                {tarefa.task} {/* <small>{tarefa.deadline}</small> */}
+            <List.Item key={index} w={"90vw"} maxW={`900px`} background={"gray"} pl={`.3em`} mb={".2em"} mt={".5"} display={"flex"} alignItems={"Center"}>
+              <input
+                type="checkbox"
+                checked={tarefa.status}
+                onChange={() => handleCheckboxChange(tarefa.id)}
+              />
+              <Text className="text" w={"100%"} ml={".5em"}>
+                {tarefa.task || tarefa.tarefa}
               </Text>
-              <Button variant={"solid"} alignSelf={'end'} className="buttonX" onClick={() => remove(tarefa.id)}>
+              <Button variant={"solid"} alignSelf={"end"} className="buttonX" onClick={() => remove(tarefa)}>
                 X
-              </Button >
+              </Button>
             </List.Item>
           ))}
         </List.Root>
+      ) : (
+        <p className="no-tasks">Nenhuma tarefa adicionada ainda.</p>
       )}
-
-      {/* Exibir mensagem caso não haja tarefas */}
-      {tarefas.length === 0 && <p className="no-tasks">Nenhuma tarefa adicionada ainda.</p>}
     </Flex>
   );
 };
