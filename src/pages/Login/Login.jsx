@@ -8,7 +8,7 @@ import { Box, Input, Flex, Heading, Button } from "@chakra-ui/react";
 export const logado = false;
 
 const Login = () => {
-  const urlLogin = "http://localhost:5000/Login";
+  const urlLogin = "https://api-todo-ckia.onrender.com/Login";
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
   const { dataPost, httpConfigPost } = usePost(urlLogin);

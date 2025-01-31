@@ -5,7 +5,7 @@ import usePost from '../../Functions/usePost';
 import { useNavigate } from 'react-router-dom';
 
 const Cadastro = () => {
-    const url = 'http://localhost:5000/CreateUser'
+    const url = 'https://api-todo-ckia.onrender.com/CreateUser'
     const [pass, setPass] = useState('');
     const [usuario, setUsuario] = useState('');
     const [confirmPass, setConfirmPass] = useState('');

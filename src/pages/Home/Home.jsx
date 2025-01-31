@@ -15,10 +15,10 @@ const Home = () => {
   const [novaTarefa, setNovaTarefa] = useState("");
   const [deadline, setDeadline] = useState("0000-00-00");
   const [trigger, setTrigger] = useState(0);
-  const { httpConfigPut } = usePut('http://localhost:5000/Update');
-  const { httpConfigPost } = usePost('http://localhost:5000/addTask');
-  const { httpConfigDel } = useDelete('http://localhost:5000/Delete');
-  const { dataGet, httpConfigGet } = useGet(`http://localhost:5000/?id=${userID}`);
+  const { httpConfigPut } = usePut('https://api-todo-ckia.onrender.com/Update');
+  const { httpConfigPost } = usePost('https://api-todo-ckia.onrender.com/addTask');
+  const { httpConfigDel } = useDelete('https://api-todo-ckia.onrender.com/Delete');
+  const { dataGet, httpConfigGet } = useGet(`https://api-todo-ckia.onrender.com/?id=${userID}`);
   const ref = useRef(null);
 
   useEffect(() => {
