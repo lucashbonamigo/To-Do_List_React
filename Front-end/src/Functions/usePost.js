@@ -5,8 +5,10 @@ export const usePost = (url) => {
     const [config, setConfig] = useState("");
     const [method, setMethod] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const httpConfigPost = (body, method) => {
+        setLoading(true);
         if (method === 'POST') {
             setConfig({
                 method,
@@ -30,21 +32,29 @@ export const usePost = (url) => {
                 res = await fetch(url, config);
 
                 if (!res.ok) {
-                    setError(res);
                     setData(null);
+                    const json = await res.json();
+                    setData(json);
+                    console.log(json)
                     throw new Error(`Erro: ${res.status}`)
                 };
+                if (res.status === 201) {
+                    setData('Success')
+                    return
+                }
                 const json = await res.json();
                 setData(json);
                 setError(null);
             } catch (err) {
                 setError(err.message);
                 setData(null);
+            }finally{
+                setLoading(false);
             }
         };
         httpRequest();
     }, [config, method, url]);
-    return { dataPost, httpConfigPost, error };
+    return { dataPost, httpConfigPost, error, loading };
 };
 
 export default usePost

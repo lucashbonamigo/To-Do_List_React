@@ -49,7 +49,7 @@ app.post('/CreateUser', (req, res) => {
                 console.log("erro ao executar query:", err);
                 return res.status(400).json(err);
             }
-            return res.sendStatus(201)
+            return res.status(201).json({message: "success"})
         })
 
     } catch (error) {

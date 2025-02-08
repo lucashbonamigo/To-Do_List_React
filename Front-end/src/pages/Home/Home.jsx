@@ -68,13 +68,12 @@ const Home = () => {
         tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0 } : tarefa
       );
   
-      // Pegamos o status atualizado da tarefa para enviar na requisição
       const tarefaAtualizada = novasTarefas.find((tarefa) => tarefa.id === id);
   
       if (tarefaAtualizada) {
         const body = {
           id,
-          status: tarefaAtualizada.status, // Enviando o status atualizado
+          status: tarefaAtualizada.status,
         };
         httpConfigPut(body, "PUT");
       }
@@ -86,7 +85,7 @@ const Home = () => {
   return (
     <Flex className="body">
       {user && user.results && user.results[0] ? (
-        <Heading size={"5xl"}>To-Do List React {user.results[0].user}</Heading>
+        <Heading size={"4xl"}>Minha lista de tarefas</Heading>
       ) : (
         <Heading size={"5xl"}>Carregando...</Heading>
       )}
