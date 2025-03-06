@@ -1,6 +1,5 @@
 *{
     padding: 0;
-    margin: 0;
     box-sizing: border-box;
 }
 
@@ -45,33 +44,6 @@ input[type="checkbox"]:checked + .text {
     color: aliceblue;
     width: 250px;
 }
-
-.additem{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background-color: transparent;
-    border: 2px solid #ffff;
-    color: gray;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.digitadd{
-    padding-left: 10px;
-    background-color: transparent;
-    border: 2px solid white;
-    margin-bottom: 5px;
-    margin-top: 10px;
-    border-radius: 10px;
-    color: aliceblue;
-}
-
-.digitadd:focus{
-    background-color: gray;
-    border: 1px gold;
-}
-
 .buttonX{
     background-color: transparent;
     color: aliceblue;

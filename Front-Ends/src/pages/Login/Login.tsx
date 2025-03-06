@@ -60,10 +60,10 @@ return (
       </Flex>
     </>) : (<>
       {errorMessage ? (<Text background={'red'} textAlign={'center'} position={'sticky'}>{errorMessage}</Text>) : (null)}
-      <Flex justify={'center'} alignContent={'center'} direction={"column"} mx={'auto'} >
+      <Flex direction={"column"}>
         <Heading size={'3xl'} textAlign={'center'}>Faça login e registre suas tarefas agora mesmo!</Heading>
         <form onSubmit={(e) => handleSubmit(e)}>
-          <Flex w={'100%'} direction={'column'} mt={'50px'}>
+          <Flex direction={'column'} mt={'50px'}>
             <LoginInput labelInput={"Usuário:"} value={usuario} type={'text'} onChange={setUsuario} />
             <LoginInput labelInput={"Senha:"} value={pass} type={'password'} onChange={setPass} />
             <Flex w={'100%'} justify={'flex-end'}>
