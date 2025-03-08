@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-export const usePut = (url) => {
+export const usePut = (url: string) => {
     const [dataPost, setData] = useState(null);
-    const [config, setConfig] = useState("");
-    const [method, setMethod] = useState(null);
+    const [config, setConfig] = useState<{ method: string; headers: { "Content-Type": string }; body: string } | null>(null);
+    const [method, setMethod] = useState<string|null>(null);
     const [error, setError] = useState(null);
 
-    const httpConfigPut = (body, method) => {
+    const httpConfigPut = (body :any, method :string) => {
         if (method === 'PUT') {
             setConfig({
                 method,
@@ -34,7 +34,7 @@ export const usePut = (url) => {
                 const json = await res.json();
                 setData(json);
                 setError(null);
-            } catch (err) {
+            } catch (err: any) {
                 setError(err.message);
                 setData(null);
             }

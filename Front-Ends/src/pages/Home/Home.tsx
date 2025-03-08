@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext, FormEvent } from "react";
 import usePost from '../../hooks/usePost.js';
-import { Field } from '../../components/ui/field.js';
 
 import { Button, Heading, Input, Flex, Text, List } from '@chakra-ui/react';
 import { UserContext } from '../../hooks/UserContext.js';
 import useDelete from '../../hooks/useDelete.js';
 import useGet from '../../hooks/useGet.js';
 import usePut from '../../hooks/usePut.js';
+import { IPostbody, ITask } from "../../Interfaces/Interfaces.js";
 
 const Home = () => {
   const { user } = useContext(UserContext);
-  const [userID, setUserID] = useState(null);
-  const [tarefas, setTarefas] = useState([]);
+  const [userID, setUserID] = useState(0);
+  const [tarefas, setTarefas] = useState<ITask[]>([]);
   const [novaTarefa, setNovaTarefa] = useState("");
   const [deadline, setDeadline] = useState("0000-00-00");
   const [trigger, setTrigger] = useState(0);
@@ -42,7 +42,7 @@ const Home = () => {
 
   useEffect(() => {
     if (tarefas.length > 0) {
-      orderTasks(tarefas);
+      orderTasks();
     }
   }, [tarefas]);
 
@@ -52,11 +52,11 @@ const Home = () => {
     }
   }, [trigger, userID]);
   
-  const adicionar1 = (e) => {
+  const adicionar1 = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!novaTarefa.trim()) return;
 
-    const task = { novaTarefa, deadline, userID, states: false };
+    const task: IPostbody = { novaTarefa, deadline, userID, states: false };
     httpConfigPost(task, "POST");
     setNovaTarefa("");
     setTrigger((trigger) => trigger + 1);
@@ -66,7 +66,7 @@ const Home = () => {
     }
   };
 
-  const remove = (tarefaParaRemover) => {
+  const remove = (tarefaParaRemover : ITask) => {
     const filteredTarefas = tarefas.filter((tarefa) => tarefa.id !== tarefaParaRemover.id);
     setTarefas(filteredTarefas);
     setTrigger((prev) => prev + 1);
@@ -75,9 +75,9 @@ const Home = () => {
     httpConfigDel(task, "DELETE");
   };
 
-  const handleCheckboxChange = (id) => {
-    setTarefas((prevTarefas) => {
-      const novasTarefas = prevTarefas.map((tarefa) =>
+  const handleCheckboxChange = (id: number) => {
+    setTarefas((prevTarefas: ITask[]) => {
+      const novasTarefas = prevTarefas.map((tarefa: ITask) =>
         tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0 } : tarefa
       );
   
@@ -97,14 +97,15 @@ const Home = () => {
 
   return (
     <Flex className="body">
-      {user && user.results && user.results[0] ? (
+      {user && user.results && user.results[0] ? ( //alterar no back ta retornando um objeto deve retornar uma string simples
         <Heading size={"4xl"}>Minha lista de tarefas</Heading>
       ) : (
         <Heading size={"5xl"}>Carregando...</Heading>
       )}
 
       <form onSubmit={adicionar1} className="form">
-        <Field label={"Adicionar tarefa"} mt={"2em"}>
+        <Flex direction={"column"}>
+          <sup>Adicionar tarefa</sup>
           <Input
             ref={ref}
             variant={"flushed"}
@@ -115,7 +116,7 @@ const Home = () => {
             value={novaTarefa}
             onChange={(e) => setNovaTarefa(e.target.value)}
           />
-        </Field>
+        </Flex>
         {/* {<Field label={"Deadline"}>
           <Input
             type="date"
@@ -140,15 +141,15 @@ const Home = () => {
 
       {tarefas.length > 0 ? (
         <List.Root>
-          {tarefas.map((tarefa, index) => (
+          {tarefas.map((tarefa : ITask, index) => (
             <List.Item key={index} w={"90vw"} maxW={`900px`} border={'1px solid white'} background={"transparent"} pl={`.3em`} mt={".5em"} display={"flex"} alignItems={"Center"}>
               <input
                 type="checkbox"
-                checked={tarefa.status}
+                checked={tarefa.status === 1 ? true : false}
                 onChange={() => handleCheckboxChange(tarefa.id)}
               />
               <Text className="text" w={"100%"} ml={".5em"}>
-                {tarefa.task || tarefa.tarefa}
+                {tarefa.task}
               </Text>
               <Button variant={"solid"} alignSelf={"end"} className="buttonX" onClick={() => remove(tarefa)}>
                 X

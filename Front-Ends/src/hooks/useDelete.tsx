@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react'
+import { IHead } from '../Interfaces/Interfaces';
 
-export const useDelete = (url) => {
+interface IBody {
+    id: number
+}
+
+export const useDelete = (url: string) => {
     const [dataDel, setData] = useState(null);
-    const [config, setConfig] = useState("");
-    const [method, setMethod] = useState(null);
-    const [itemId, setItemId] = useState(null);
+    const [config, setConfig] = useState<IHead|null>(null);
+    const [method, setMethod] = useState<string|null>(null);
+    const [itemId, setItemId] = useState<IBody>();
     const [error, setError] = useState(null);
 
-    const httpConfigDel = (body, method) => {
+    const httpConfigDel = (body: IBody, method: string) => {
         if (method === 'DELETE') {
             setConfig({
                 method,
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(body)
             })
@@ -34,7 +39,7 @@ export const useDelete = (url) => {
                 const json = await res.json();
                 setData(json);
                 setError(null);
-            } catch (err) {
+            } catch (err: any) {
                 setError(err.message);
                 setData(null);
             }

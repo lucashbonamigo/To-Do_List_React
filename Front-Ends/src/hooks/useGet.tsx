@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import { IHead } from '../Interfaces/Interfaces';
 
-export const useGet = (url) => {
+export const useGet = (url:string) => {
   const [dataGet, setData] = useState(null);
-  const [config, setConfig] = useState("");
-  const [method, setMethod] = useState(null);
+  const [config, setConfig] = useState<IHead|null>(null);
+  const [method, setMethod] = useState<string|null>(null);
   const [error, setError] = useState(null);
 
-  const httpConfigGet = (method) => {
+  const httpConfigGet = (method: string) => {
     if (method === "GET") {
       setConfig({
         method,
@@ -31,7 +32,7 @@ export const useGet = (url) => {
 
         setData(json);
         setError(null);
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message);
         setData(null);
       }

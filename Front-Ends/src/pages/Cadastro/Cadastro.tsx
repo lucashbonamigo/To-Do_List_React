@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactElement, FormEvent } from 'react';
 import { Box, Button, Heading, Text, Flex, ProgressCircle } from '@chakra-ui/react';
 import usePost from '../../hooks/usePost';
 import { useNavigate } from 'react-router-dom';
-import LoginInput from '../../components/LoginInput'
+import LoginInput from '../../components/LoginInput/LoginInput'
 
 const Cadastro = () => {
     const url = 'https://api-todo-ckia.onrender.com/user/register'
@@ -13,7 +13,7 @@ const Cadastro = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { httpConfigPost, error, dataPost, loading } = usePost(url);
 
-    const createUser = (e) => {
+    const createUser = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!usuario || !pass || !confirmPass) {
             setErrorMessage("Por favor, preencha todos os campos.");
@@ -72,7 +72,7 @@ const Cadastro = () => {
                 </Heading>
                 <Box p={'1em'} w={'500px'} m={'auto'} mt={'1em'}>
                     <form onSubmit={createUser}>
-                        <LoginInput labelInput={"Cadastro:"} value={usuario} onChange={setUsuario} />
+                        <LoginInput labelInput={"Cadastro:"} type='text' value={usuario} onChange={setUsuario} />
                         <LoginInput labelInput={"Senha:"} value={pass} type={'password'} onChange={setPass} />
                         <LoginInput labelInput={"confirme a senha:"} type={'password'} value={confirmPass} onChange={setConfirmPass} />
                         <Button type='submit' mt={'1em'}>

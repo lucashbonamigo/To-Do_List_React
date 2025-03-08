@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../../hooks/UserContext";
 import usePost from "../../hooks/usePost";
 import { Input, Flex, Heading, Button, Text, ProgressCircle } from "@chakra-ui/react";
-import LoginInput from '../../components/LoginInput'
+import LoginInput from '../../components/LoginInput/LoginInput'
 export const logado = false;
 
 const Login = () => {
@@ -23,7 +23,6 @@ const Login = () => {
       setErrorMessage("Por favor, preencha todos os campos.");
       return;
     }
-
     const user1 = {
       usuario,
       pass,

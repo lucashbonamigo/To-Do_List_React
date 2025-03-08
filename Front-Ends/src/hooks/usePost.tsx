@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
+import { IHead, IPostbody, Iresponse } from '../Interfaces/Interfaces';
 
-export const usePost = (url) => {
-    const [dataPost, setData] = useState(null);
-    const [config, setConfig] = useState("");
-    const [method, setMethod] = useState(null);
+export const usePost = (url: string) => {
+    const [dataPost, setData] = useState<Iresponse|null>(null);
+    const [config, setConfig] = useState<IHead|null>(null);
+    const [method, setMethod] = useState<string|null>(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const httpConfigPost = (body, method) => {
+    const httpConfigPost = (body:IPostbody, method: string) => {
         setLoading(true);
         if (method === 'POST') {
             setConfig({
@@ -39,13 +40,13 @@ export const usePost = (url) => {
                     throw new Error(`Erro: ${res.status}`)
                 };
                 if (res.status === 201) {
-                    setData('Success')
+                    setData(null)
                     return
                 }
                 const json = await res.json();
                 setData(json);
                 setError(null);
-            } catch (err) {
+            } catch (err:any) {
                 setError(err.message);
                 setData(null);
             }finally{
