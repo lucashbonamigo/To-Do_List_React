@@ -32,7 +32,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if ( dataPost) {
+    if (dataPost) {
       setUser(dataPost);
       setLogged(true);
       Navigate('/');
