@@ -5,12 +5,15 @@
 
 form{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
     width: 50vw;
-    border: 1px solid white;
+   
+    
+    gap: .3em;
+    padding: 0 10px 0 10px;
 }
 
 .body{

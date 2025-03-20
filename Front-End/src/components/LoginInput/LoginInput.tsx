@@ -1,10 +1,10 @@
 import { Flex, Input } from '@chakra-ui/react';
 import { propFunc } from './Interfaces';
 
-const LoginInput = ({labelInput, value, onChange, type}: propFunc) => {
+const LoginInput = ({labelInput, value, onChange, type, width}: propFunc) => {
     return (
         <>
-            <Flex direction={'column'} mt={'20px'} w={'100%'}>
+            <Flex direction={'column'} w={width} mt={'20px'}>
                 <sup>{labelInput}</sup>
                 <Input 
                     mt={'4px'}

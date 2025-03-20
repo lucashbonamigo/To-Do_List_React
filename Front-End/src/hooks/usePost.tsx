@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { IHead, IPostbody, Iresponse } from '../Interfaces/Interfaces';
+import { IHead, Iresponse } from '../Interfaces/Interfaces';
+import { Task } from '../components/TaskBar/ClassTask';
 
 export const usePost = (url: string) => {
     const [dataPost, setData] = useState<Iresponse|null>(null);
@@ -8,7 +9,7 @@ export const usePost = (url: string) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const httpConfigPost = (body:IPostbody, method: string) => {
+    const httpConfigPost = (body:Task, method: string) => {
         setLoading(true);
         if (method === 'POST') {
             setConfig({
