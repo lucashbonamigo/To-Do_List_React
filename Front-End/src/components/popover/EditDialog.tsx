@@ -15,6 +15,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
   const [deadline, setDeadline] = useState<Date|undefined>(tarefa.deadline);
   const [repetitions, setRepetitions] = useState<number|undefined>(tarefa.Repetitions);
   const [estimedTime, setEstmedTime] = useState<number|undefined>(tarefa.estimatedTime);
+  const [isOpen, setIsOpen] = useState(false);
 
   const Update = (taskToAtualize: Task) => {
     const task = {
@@ -27,12 +28,13 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
       tab_task: taskToAtualize.tab_task,
     };
     httpConfigPut(task ,"PUT")
+    setIsOpen(false)
   };
 
   return (
-    <Dialog.Root role="alertdialog">
+    <Dialog.Root role="alertdialog" open={isOpen}>
       <Dialog.Trigger asChild>
-        <Button variant="outline" className="buttonV" size="sm">
+        <Button variant="outline" className="buttonV" size="sm" onClick={() => setIsOpen(true)}>
           <PiPencil />
         </Button>
       </Dialog.Trigger>
@@ -57,7 +59,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
             </Dialog.Body>
             <Dialog.Footer p={'1.5em'}>
               <Dialog.ActionTrigger asChild>
-                <Button variant="outline">Cancelar</Button>
+                <Button onClick={()=>setIsOpen(false)} variant="outline">Cancelar</Button>
               </Dialog.ActionTrigger>
               <Button colorPalette="red" onClick={() => Update(tarefa)}>Salvar</Button>
             </Dialog.Footer>

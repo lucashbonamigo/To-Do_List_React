@@ -7,6 +7,7 @@ import { Task } from '../TaskBar/ClassTask.js'
 import { Tab } from './classTab.js'
 import DeleteDialog from '../popover/DeleteDialog.js'
 import EditeDialog from '../popover/EditDialog.js';
+import React from 'react';
 
 const Tabes = () => {
   
@@ -102,10 +103,10 @@ const Tabes = () => {
             <Text>
               {tarefas.length > 0 ? (
                 <List.Root>
-                  {tarefas.map((task: Task, index) => (
+                  {tarefas.map((task: Task) => (
                     task.tab_task.toString() === selectedTab ? (
-                      <>
-                        <List.Item key={index} w={"90vw"} maxW={`900px`} border={'1px solid white'} background={"transparent"} pl={`.3em`} mt={".5em"} display={"flex"} alignItems={"Center"}>
+                      <React.Fragment key={task.id}>
+                        <List.Item key={task.id} w={"90vw"} maxW={`900px`} border={'1px solid white'} background={"transparent"} pl={`.3em`} mt={".5em"} display={"flex"} alignItems={"Center"}>
                           <input
                             type="checkbox"
                             checked={task.status === 1 ? true : false}
@@ -118,7 +119,7 @@ const Tabes = () => {
                           <DeleteDialog tarefa={task} />
 
                         </List.Item>
-                      </>) : (null)
+                      </React.Fragment>) : (null)
                   ))}
                 </List.Root>
               ) : (
