@@ -27,6 +27,7 @@ export const usePut = (url: string) => {
 
             try {
                 let res;
+                console.log(url)
                 res = await fetch(url, config);
 
 
