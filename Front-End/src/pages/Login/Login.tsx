@@ -11,7 +11,7 @@ const Login = () => {
   const urlLogin = "https://api-todo-ckia.onrender.com/user/login";
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
-  const { dataPost, httpConfigPost, loading, error } = usePost<Iresponse>(urlLogin);
+  const { dataPost, httpConfigPost, loading, errorPost } = usePost<Iresponse>(urlLogin);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -38,12 +38,12 @@ const Login = () => {
   }, [dataPost, navigate]);
 
   useEffect(() => {
-    if (error) {
-      if (error === 'Erro: 404') {
+    if (errorPost) {
+      if (errorPost === 'Erro: 404') {
         setErrorMessage('Usuário ou senha incorretos');
       }
     }
-  }, [error])
+  }, [errorPost])
 
   return (
     <>

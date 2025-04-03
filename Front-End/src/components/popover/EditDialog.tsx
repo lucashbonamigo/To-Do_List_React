@@ -1,4 +1,4 @@
-import { Button, CloseButton, Dialog, Flex, Input, Portal } from "@chakra-ui/react"
+import { Button, CloseButton, Dialog, Flex, Portal } from "@chakra-ui/react"
 import { useContext, useState } from "react";
 import { UserContext } from "../../hooks/UserContext";
 import { Task } from "../TaskBar/ClassTask";
@@ -16,6 +16,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
   const [repetitions, setRepetitions] = useState<number|undefined>(tarefa.Repetitions);
   const [estimedTime, setEstmedTime] = useState<number|undefined>(tarefa.estimatedTime);
   const [isOpen, setIsOpen] = useState(false);
+  const [tabNumber, setTabNumber] = useState<number>(tarefa.tab_task);
 
   const Update = (taskToAtualize: Task) => {
     const task = {
@@ -25,7 +26,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
       repetitions,
       id: taskToAtualize.id,
       status: taskToAtualize.status,
-      tab_task: taskToAtualize.tab_task,
+      tab_task: tabNumber,
     };
     httpConfigPut(task ,"PUT")
     setIsOpen(false)
@@ -45,7 +46,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
             <Dialog.Header display={"flex"} direction={'column'} justifyContent={"space-between"} p={'1.5em'}>
               <Dialog.Title>Editar tarefa</Dialog.Title>
               <Dialog.CloseTrigger asChild>
-                <CloseButton size="sm" />
+                <CloseButton size="sm" onClick={()=>setIsOpen(false)}/>
               </Dialog.CloseTrigger>
             </Dialog.Header>
             <Dialog.Body p={'1em'}>
@@ -54,6 +55,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
                 <LoginInput labelInput="Repetições" type="number" value={repetitions} onChange={setRepetitions}/>
                 <LoginInput labelInput="Horas Estimadas" type="number" value={estimedTime} onChange={setEstmedTime}/>
                 <LoginInput labelInput="Data Limite" type={'Date'} value={deadline?.toString()} onChange={setDeadline}/>
+                <LoginInput labelInput="Tab" type={'Select'} value={tabNumber} onChange={setTabNumber}/>
               </Flex>
               {/* ADICIONAR TODOS OS INPUTS REFERENTES A TASK AQUI */}
             </Dialog.Body>

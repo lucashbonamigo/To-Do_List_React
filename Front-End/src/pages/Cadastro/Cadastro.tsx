@@ -11,7 +11,7 @@ const Cadastro = () => {
     const [usuario, setUsuario] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const { httpConfigPost, error, dataPost, loading } = usePost(url);
+    const { httpConfigPost, errorPost, dataPost, loading } = usePost(url);
 
     const createUser = (e: FormEvent<HTMLFormElement>) => {
         
@@ -28,11 +28,11 @@ const Cadastro = () => {
     };
 
     useEffect(() => {
-        if (error) {
+        if (errorPost) {
             alert("Usuário Inválido ou em uso")
             setUsuario('');
         }
-    }, [error])
+    }, [errorPost])
 
     useEffect(() => {
         if (dataPost) {

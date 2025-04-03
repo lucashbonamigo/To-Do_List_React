@@ -5,7 +5,7 @@ export function usePost<T>(url: string){
     const [dataPost, setData] = useState<T|null>(null);
     const [config, setConfig] = useState<IHead|null>(null);
     const [method, setMethod] = useState<string|null>(null);
-    const [error, setError] = useState(null);
+    const [errorPost, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const httpConfigPost = (body:any, method: string) => {
@@ -55,7 +55,7 @@ export function usePost<T>(url: string){
         };
         httpRequest();
     }, [config, method, url]);
-    return { dataPost, httpConfigPost, error, loading };
+    return { dataPost, httpConfigPost, errorPost, loading };
 };
 
 export default usePost

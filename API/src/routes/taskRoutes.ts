@@ -4,7 +4,6 @@ import {getTasks, addTask, updateTask, deleteTask, getTabs} from '../controllers
 const taskRouter = express.Router();
 
 taskRouter.post('/add', addTask);
-taskRouter.get('/tabs', getTabs);
 taskRouter.get('/tasks', getTasks);
 taskRouter.put('/update', updateTask);
 taskRouter.delete('/delete', deleteTask);

@@ -8,16 +8,15 @@ import { Tab } from './classTab.js'
 import DeleteDialog from '../popover/DeleteDialog.js'
 import EditeDialog from '../popover/EditDialog.js';
 import React from 'react';
+import AddTabDialog from '../popover/AddTabDialog.js';
+import { PiPencil } from 'react-icons/pi';
 
 const Tabes = () => {
-  
+
   const [selectedTab, setSelectedTab] = useState<string>('')
-  const { tarefas, setTarefas, httpConfigPut, tabsData } = useContext(UserContext);
+  const { tarefas, setTarefas, httpConfigPut, tabsData, httpConfigPost } = useContext(UserContext);
   const [tabs, setTabs] = useState<Tab[]>(tabsData ? tabsData : []);
-  const [tabId, setTabID] = useState<number>(1);
-  const [tabName, setTabName] = useState<string>('geral');
-  const [tabDescription, setTabDescription] = useState<string>('tudo misturado');
-  
+
   const handleCheckboxChange = (id: number) => {
     setTarefas((prevTarefas: Task[]) => {
       const novasTarefas = prevTarefas.map((tarefa) =>
@@ -39,19 +38,6 @@ const Tabes = () => {
     });
   };
 
-  const addTab = () => {
-    //if (!tabName) return
-    const newTabs = [...tabs]
-
-    newTabs.push(new Tab(tabId, tabName, tabDescription))
-
-    setTabs(newTabs)
-    setSelectedTab(newTabs[newTabs.length - 1].id.toString())
-    setTabName('');
-    setTabDescription('');
-    setTabID(tabId + 1);
-  }
-
   const removeTab = (id: number) => {
     if (tabs && tabs.length > 1) {
       const newTabs = [...tabs].filter((tab) => tab.id !== id)
@@ -67,9 +53,12 @@ const Tabes = () => {
       onValueChange={(e) => setSelectedTab(e.value)}
     >
       <Tabs.List flex="1 1 auto">
-        {tabs && tabs.map((tab) => (
+        {tabs && tabs.map((tab: Tab) => (
           <Tabs.Trigger value={tab.id.toString()} key={tab.id}>
             {tab.name}{" "}
+            <Button size={'sm'} animation={"0.3s"} variant="outline" className="buttonV">
+              <PiPencil color='white'/>
+            </Button>
             <CloseButton
               as="span"
               role="button"
@@ -82,16 +71,7 @@ const Tabes = () => {
             />
           </Tabs.Trigger>
         ))}
-        <Button
-          alignSelf="center"
-          ms="2"
-          size="sm"
-          variant="outline"
-          onClick={addTab}
-          w={'150px'}
-        >
-          <LuPlus /> {/* ABRIR UM FLUTUANTE COM iNPUT PARA iNSERIR O TEXTO*/}
-        </Button>
+        <AddTabDialog />
       </Tabs.List>
 
       <Tabs.ContentGroup>
@@ -115,7 +95,7 @@ const Tabes = () => {
                           <Text className="text" w={"100%"} ml={".5em"}>
                             {task.content}
                           </Text>
-                          <EditeDialog tarefa={task}/>
+                          <EditeDialog tarefa={task} />
                           <DeleteDialog tarefa={task} />
 
                         </List.Item>
