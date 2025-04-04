@@ -14,10 +14,8 @@ import DeleteTabDialog from '../popover/DeleteTabDialog.js';
 const Tabes = () => {
 
   const [selectedTab, setSelectedTab] = useState<string>('')
-  const { tarefas, setTarefas, httpConfigPut, tabsData, Getget } = useContext(UserContext);
-  const [tabs, setTabs] = useState<Tab[]>(tabsData ? tabsData : []);
-
-
+  const { tarefas, setTarefas, httpConfigPut, tabs, Getget } = useContext(UserContext);
+ 
   useEffect(() => {
     setTarefas(tarefas)
   },[tarefas]);

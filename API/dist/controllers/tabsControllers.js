@@ -45,9 +45,12 @@ export const updateTabs = asyncHandler(async (req, res) => {
 });
 export const deleteTabs = asyncHandler(async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id } = req.query;
         const sql = "DELETE FROM tabs WHERE id = ?";
         pool.query(sql, [id], (err, results) => {
+            console.log(results);
+            console.log(err);
+            console.log(id);
             if (err) {
                 console.log(err);
                 return res.status(400).json({ erro: err });

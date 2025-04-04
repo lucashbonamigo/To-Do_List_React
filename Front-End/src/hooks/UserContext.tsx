@@ -17,13 +17,14 @@ interface UserContextType {
     setTarefas: Dispatch<SetStateAction<Task[]>>,
     httpConfigPut: (body: Task, method: string)=> void,
     notification:string,
-    tabsData: Tab[]|null|undefined,
+    tabs: Tab[],
     httpConfigPost: (body: Tab, method: string)=> void,
     Getget: () => void
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [tarefas, setTarefas] = useState<Task[]>([]);
+    const [tabs, setTabs] = useState<Tab[]>([]);
     const [userID, setUserID] = useState<number>(0);
     const { dataGet: taskData , httpConfigGet: configTask } = useGet<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks?id=${userID}`);
     const { httpConfigPut, dataPut, errorPut } = usePut(`https://api-todo-ckia.onrender.com/task/update`);
@@ -34,6 +35,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
 
     useEffect(() => {
         setTarefas(taskData ? taskData : [])
+        setTabs(tabsData ? tabsData : []);
         if (tarefas.length > 0) {
             orderTasks();
         }
@@ -66,7 +68,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setTarefas(ordened);
     }
     return (
-        <UserContext.Provider value={{ tarefas, setTarefas, httpConfigPut, notification, tabsData, httpConfigPost, Getget }}>
+        <UserContext.Provider value={{ tarefas, setTarefas, httpConfigPut, notification, tabs, httpConfigPost, Getget }}>
             {children}
         </UserContext.Provider>
     );

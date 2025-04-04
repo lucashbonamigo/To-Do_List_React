@@ -1,6 +1,6 @@
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import useDelete from "../../hooks/useDelete";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../hooks/UserContext";
 
 interface IpropComp {
@@ -10,16 +10,18 @@ interface IpropComp {
 const DeleteTabDialog = ({ id }: IpropComp) => {
   const { httpConfigDel } = useDelete(`https://api-todo-ckia.onrender.com/tabs/delete?id=${id}`);
   const {Getget} = useContext(UserContext);
+  const [isOpen, setIsOpen] = useState(false);
 
   const remove = () => {
     httpConfigDel("DELETE");
+    setIsOpen(false);
     Getget()
   }
 
   return (
-    <Dialog.Root role="alertdialog">
+    <Dialog.Root role="alertdialog" open={isOpen}>
       <Dialog.Trigger asChild>
-        <Button variant="outline" className="buttonX" size="sm">
+        <Button variant="outline" className="buttonX" size="sm" onClick={() => setIsOpen(true)}>
           X
         </Button>
       </Dialog.Trigger>
