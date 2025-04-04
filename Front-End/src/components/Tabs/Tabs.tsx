@@ -14,7 +14,7 @@ import DeleteTabDialog from '../popover/DeleteTabDialog.js';
 const Tabes = () => {
 
   const [selectedTab, setSelectedTab] = useState<string>('')
-  const { tarefas, setTarefas, httpConfigPut, tabsData } = useContext(UserContext);
+  const { tarefas, setTarefas, httpConfigPut, tabsData, Getget } = useContext(UserContext);
   const [tabs, setTabs] = useState<Tab[]>(tabsData ? tabsData : []);
 
 
@@ -41,6 +41,7 @@ const Tabes = () => {
       }
       return novasTarefas;
     });
+    Getget()
   };
 
 
@@ -49,7 +50,7 @@ const Tabes = () => {
       value={selectedTab}
       variant="outline"
       size="sm"
-      onValueChange={(e) => setSelectedTab(e.value)}
+      onValueChange={(e:any) => setSelectedTab(e.value)}
     >
       <Tabs.List flex="1 1 auto">
         {tabs && tabs.map((tab: Tab) => (

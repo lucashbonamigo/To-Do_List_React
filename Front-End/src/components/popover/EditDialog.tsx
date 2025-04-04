@@ -10,7 +10,7 @@ interface IpropComp {
 }
 
 const EditeDialog = ({ tarefa }: IpropComp) => {
-  const { httpConfigPut } = useContext(UserContext);
+  const { httpConfigPut, Getget } = useContext(UserContext);
   const [content, setNovaTarefa] = useState(tarefa.content);
   const [deadline, setDeadline] = useState<Date|undefined>(tarefa.deadline);
   const [repetitions, setRepetitions] = useState<number|undefined>(tarefa.Repetitions);
@@ -30,6 +30,7 @@ const EditeDialog = ({ tarefa }: IpropComp) => {
     };
     httpConfigPut(task ,"PUT")
     setIsOpen(false)
+    Getget()
   };
 
   return (
