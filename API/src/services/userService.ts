@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 
 export const registerUser = async (usuario: string, pass: string) => {
     return new Promise((resolve, reject) => {

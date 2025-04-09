@@ -1,5 +1,5 @@
 import { ITask } from "../models/taskModel";
-import pool from "../database/db";
+import pool from "../database/db.js";
 
 
 export const getTasks = async (id: number) => {

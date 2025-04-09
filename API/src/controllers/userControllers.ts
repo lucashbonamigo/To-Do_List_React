@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-import * as userService from '../services/userService';
+import * as userService from '../services/userService.js';
 import { RequestHandler } from 'express';
 
 export const registerUser: RequestHandler = asyncHandler(async(req, res) => {

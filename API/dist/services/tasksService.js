@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 export const getTasks = async (id) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM task WHERE user_id = ?;";

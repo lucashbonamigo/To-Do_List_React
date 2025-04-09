@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 export const createTab = (tab) => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO tabs(name, description, user_id) VALUES (?, ?, ?)";

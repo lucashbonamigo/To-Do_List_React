@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/db.js";
 import { Tab } from "../models/tabModel";
 
 export const createTab = (tab: Tab): Promise<any> => {
