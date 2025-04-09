@@ -11,12 +11,8 @@ import EditTabDialog from '../popover/EditTabDialog.js';
 import Item from '../Item/item';
 
 const Tabes = () => {
-  const { tarefas, tabs, setSelectedTab:set2 } = useContext(UserContext);
+  const { tarefas, tabs, setSelectedTab: set2 } = useContext(UserContext);
   const [selectedTab, setSelectedTab] = useState<string>(tabs && tabs[0]?.id.toString());
-
-  // useEffect(() => {
-  //   setTarefas(tarefas)
-  // }, [tarefas]);
 
   return (
     <Tabs.Root
@@ -40,15 +36,15 @@ const Tabes = () => {
       </Tabs.List>
 
       <Tabs.ContentGroup>
-        {tabs.length > 0 ? (tabs.map((tab: Tab) => (
+        {tabs?.length > 0 ? (tabs.map((tab: Tab) => (
           <Tabs.Content value={tab.id.toString()} key={tab.id}>
             <Heading size="xl" my="6">
               {tab.description ? tab.description : null}
             </Heading>
             <Text>
-              {tarefas.length > 0 ? (
+              {tarefas?.length > 0 ? (
                 <List.Root>
-                  {tarefas.map((task: Task) => (
+                  {tarefas?.map((task: Task) => (
                     task.tab_task.toString() === selectedTab ? (
                       <React.Fragment key={task.id}>
                         <List.Item h={'50px'} border={'1px solid white'} pl={`.3em`} mt={".5em"} display={"flex"} alignItems={"Center"}>
@@ -58,7 +54,7 @@ const Tabes = () => {
                   ))}
                 </List.Root>
               ) : (
-                <p className="no-tasks">Nenhuma tarefa adicionada ainda.</p>
+                <Text className="no-tasks">Nenhuma tarefa adicionada ainda.</Text>
               )}
             </Text>
           </Tabs.Content>

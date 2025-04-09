@@ -10,7 +10,7 @@ export const getTasks: RequestHandler  = asyncHandler(async(req, res) => {
             return;
         }
         const tarefas  = await taskService.getTasks(Number(id));
-        res.status(200).json({ tarefas});
+        res.status(200).json(tarefas);
     } catch (error) {
         res.status(500).send({ erro: "Erro de servidor" })
     }
