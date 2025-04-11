@@ -15,11 +15,11 @@ interface UserContextProviderProps {
 interface UserContextType {
     tarefas: Task[],
     setTarefas: Dispatch<SetStateAction<Task[]>>,
-    tabsUpdate: (body: Tab, method: string)=> void,
-    taskUpdate: (body: Task, method: string)=> void,
-    notification:string,
+    tabsUpdate: (body: Tab, method: string) => void,
+    taskUpdate: (body: Task, method: string) => void,
+    notification: string,
     tabs: Tab[],
-    httpConfigPost: (body: Tab, method: string)=> void,
+    httpConfigPost: (body: Tab, method: string) => void,
     Getget: () => void
     selectedTab: string,
     setSelectedTab: Dispatch<SetStateAction<string>>,
@@ -30,12 +30,12 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [tarefas, setTarefas] = useState<Task[]>([]);
     const [tabs, setTabs] = useState<Tab[]>([]);
     const [userID, setUserID] = useState<number>(0);
-    const { dataGet: taskData , httpConfigGet: configTask } = useGet<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks?id=${userID}`);
-    const { httpConfigPut: taskUpdate, dataPut :taskDataPut, errorPut: taskErrorPut } = usePut<Task>(`https://api-todo-ckia.onrender.com/task/update`);
-    const { httpConfigPut: tabsUpdate, dataPut : tabsDataPut, errorPut : tabsErrorPut} = usePut<Tab>(`https://api-todo-ckia.onrender.com/tabs/update`);
+    const { dataGet: taskData, httpConfigGet: configTask } = useGet<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks?id=${userID}`);
+    const { httpConfigPut: taskUpdate, dataPut: taskDataPut, errorPut: taskErrorPut } = usePut<Task>(`https://api-todo-ckia.onrender.com/task/update`);
+    const { httpConfigPut: tabsUpdate, dataPut: tabsDataPut, errorPut: tabsErrorPut } = usePut<Tab>(`https://api-todo-ckia.onrender.com/tabs/update`);
     const [notification, setNotification] = useState<string>('');
-    const {dataGet: tabsData, httpConfigGet: configData} = useGet<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs?id=${userID}`);
-    const { httpConfigPost, errorPost} = usePost<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
+    const { dataGet: tabsData, httpConfigGet: configData } = useGet<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs?id=${userID}`);
+    const { httpConfigPost, errorPost } = usePost<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
     const [counter, setCounter] = useState<number>(0);
     const [selectedTab, setSelectedTab] = useState<string>('0');
 
@@ -49,10 +49,16 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         taskErrorPut && setNotification(taskErrorPut);
         tabsErrorPut && setNotification(tabsErrorPut);
         errorPost && setNotification(errorPost)
-        setTimeout(function() {
+        setTimeout(function () {
             setNotification('')
         }, 3000);
     }, [taskData, taskDataPut, tabsDataPut, errorPost, counter]);
+
+    useEffect(() => {
+        if (tabs.length > 0) {
+            setSelectedTab(tabs[0].id.toString());
+        }
+    }, [tabs]);
 
     useEffect(() => {
         if (!userID) {

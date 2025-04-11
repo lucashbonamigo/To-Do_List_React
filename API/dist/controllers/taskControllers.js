@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import * as taskService from '../services/tasksService.js';
-export const getTasks = asyncHandler(async (req, res) => {
+export const getTasks = asyncHandler(async (req, res, next) => {
     try {
         const { id } = req.query;
         if (!id) {
@@ -11,10 +11,10 @@ export const getTasks = asyncHandler(async (req, res) => {
         res.status(200).json(tarefas);
     }
     catch (error) {
-        res.status(500).send({ erro: "Erro de servidor" });
+        next(error);
     }
 });
-export const addTask = asyncHandler(async (req, res) => {
+export const addTask = asyncHandler(async (req, res, next) => {
     try {
         const { content, tab_task, repetitions, estimatedTime, deadline, status, id } = req.body;
         if (!content) {
@@ -25,11 +25,10 @@ export const addTask = asyncHandler(async (req, res) => {
         res.status(201).json({ success: "Tarefa criada com sucesso" });
     }
     catch (error) {
-        console.log("erro no servidor", error);
-        res.status(500).json({ erro: "Erro de servidor" });
+        next(error);
     }
 });
-export const updateTask = asyncHandler(async (req, res) => {
+export const updateTask = asyncHandler(async (req, res, next) => {
     try {
         const { content, tab_task, repetitions, hours, deadline, status, id } = req.body;
         if (!content) {
@@ -40,21 +39,20 @@ export const updateTask = asyncHandler(async (req, res) => {
         res.status(200).json({ success: "Tarefa atualizada com sucesso" });
     }
     catch (error) {
-        console.log(error);
-        res.status(500).json({ erro: "Erro de servidor", error });
+        next(error);
     }
 });
-export const deleteTask = asyncHandler(async (req, res) => {
+export const deleteTask = asyncHandler(async (req, res, next) => {
     try {
-        const { id } = req.body;
+        const { id } = req.query;
         if (!id) {
             res.status(400).json({ erro: "ID da tarefa não pode ser vazio" });
             return;
         }
-        taskService.deleteTask(id);
+        await taskService.deleteTask(Number(id));
         res.status(200).json({ success: "Tarefa deletada com sucesso" });
     }
     catch (err) {
-        res.status(500).json({ erro: "Erro de servidor" });
+        next(err);
     }
 });

@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { Flex, Heading, List, ProgressCircle, Tabs, Text } from "@chakra-ui/react"
-import { useState } from "react"
 import { UserContext } from '../../hooks/UserContext.js';
 import { Task } from '../TaskBar/ClassTask.js'
 import { Tab } from './classTab.js'
@@ -11,8 +10,8 @@ import EditTabDialog from '../popover/EditTabDialog.js';
 import Item from '../Item/item';
 
 const Tabes = () => {
-  const { tarefas, tabs, setSelectedTab: set2 } = useContext(UserContext);
-  const [selectedTab, setSelectedTab] = useState<string>(tabs && tabs[0]?.id.toString());
+  const { tarefas, tabs, setSelectedTab, selectedTab, } = useContext(UserContext);
+ // const [selectedTabs, setSelectedTab] = useState<string>(tabs && tabs[0]?.id.toString());
 
   return (
     <Tabs.Root
@@ -21,7 +20,6 @@ const Tabes = () => {
       size="sm"
       onValueChange={(e: any) => {
         setSelectedTab(e.value);
-        set2(e.value);
       }}
     >
       <Tabs.List flex="1 1 auto">

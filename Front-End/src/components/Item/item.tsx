@@ -10,6 +10,7 @@ interface Iprops {
 }
 const item = ({ task }: Iprops) => {
     const { setTarefas, taskUpdate, Getget } = useContext(UserContext);
+    
     const handleCheckboxChange = (id: number) => {
         setTarefas((prevTarefas: Task[]) => {
             const novasTarefas = prevTarefas.map((tarefa) =>

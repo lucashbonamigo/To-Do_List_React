@@ -18,7 +18,7 @@ const DeleteTabDialog = ({ id }: IpropComp) => {
     httpConfigDel();
     console.log("id", id)
     setIsOpen(false);
-    //Getget()
+    Getget()
   }
 
   return (

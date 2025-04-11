@@ -1,5 +1,5 @@
 import * as tabService from '../services/tabService.js';
-export const addTab = async (req, res) => {
+export const addTab = async (req, res, next) => {
     try {
         const { name, description, user_id } = req.body;
         if (!name || !user_id)
@@ -8,10 +8,10 @@ export const addTab = async (req, res) => {
         res.status(201).json({ success: "Tab criada com sucesso" });
     }
     catch (err) {
-        res.status(500).json({ erro: "Erro ao criar tab", err });
+        next(err);
     }
 };
-export const updateTabs = async (req, res) => {
+export const updateTabs = async (req, res, next) => {
     try {
         const { name, description, user_id, id } = req.body;
         if (!name || !description)
@@ -20,10 +20,10 @@ export const updateTabs = async (req, res) => {
         res.status(200).json({ success: "Tab atualizada com sucesso" });
     }
     catch (err) {
-        res.status(500).json({ erro: "Erro ao atualizar tab", err });
+        next(err);
     }
 };
-export const deleteTabs = async (req, res) => {
+export const deleteTabs = async (req, res, next) => {
     try {
         const { id } = req.query;
         if (!id)
@@ -32,10 +32,10 @@ export const deleteTabs = async (req, res) => {
         res.status(200).json({ success: "Tab deletada com sucesso" });
     }
     catch (err) {
-        res.status(500).json({ erro: "Erro ao deletar tab", err });
+        next(err);
     }
 };
-export const getTabs = async (req, res) => {
+export const getTabs = async (req, res, next) => {
     try {
         const { id } = req.query;
         if (!id)
@@ -44,6 +44,6 @@ export const getTabs = async (req, res) => {
         res.status(200).json(tabs);
     }
     catch (err) {
-        res.status(500).json({ erro: "Erro ao buscar tabs", err });
+        next(err);
     }
 };
