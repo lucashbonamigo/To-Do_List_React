@@ -20,10 +20,11 @@ interface UserContextType {
     notification: string,
     tabs: Tab[],
     httpConfigPost: (body: Tab, method: string) => void,
-    Getget: () => void
     selectedTab: string,
     setSelectedTab: Dispatch<SetStateAction<string>>,
     userID: number,
+    setTabs: Dispatch<SetStateAction<Tab[]>>,
+    orderTasks: () => void,
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
@@ -36,7 +37,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [notification, setNotification] = useState<string>('');
     const { dataGet: tabsData, httpConfigGet: configData } = useGet<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs?id=${userID}`);
     const { httpConfigPost, errorPost } = usePost<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
-    const [counter, setCounter] = useState<number>(0);
     const [selectedTab, setSelectedTab] = useState<string>('0');
 
     useEffect(() => {
@@ -52,7 +52,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setTimeout(function () {
             setNotification('')
         }, 3000);
-    }, [taskData, taskDataPut, tabsDataPut, errorPost, counter]);
+    }, [taskData, taskDataPut, tabsDataPut, errorPost]);
 
     useEffect(() => {
         if (tabs.length > 0) {
@@ -68,13 +68,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         configTask("GET");
         configData("GET");
         orderTasks()
-    }, [userID, counter]);
-
-    const Getget = () => {
-        setTarefas([]);
-        setTabs([]);
-        setCounter(counter + 1);
-    }
+    }, [userID]);
 
     const orderTasks = () => {
         const checkedTask = tarefas.filter((task: Task) => task.status === 1);
@@ -83,7 +77,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setTarefas(ordened);
     }
     return (
-        <UserContext.Provider value={{ tarefas, userID, setTarefas, selectedTab, setSelectedTab, taskUpdate, tabsUpdate, notification, tabs, httpConfigPost, Getget }}>
+        <UserContext.Provider value={{ tarefas, userID, setTarefas, selectedTab, setSelectedTab, taskUpdate, tabsUpdate, notification, tabs, setTabs, httpConfigPost, orderTasks }}>
             {children}
         </UserContext.Provider>
     );

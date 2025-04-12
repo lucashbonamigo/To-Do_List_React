@@ -10,7 +10,7 @@ interface Iprops {
 }
 
 const item = ({ task }: Iprops) => {
-    const { setTarefas, taskUpdate, Getget } = useContext(UserContext);
+    const { setTarefas, taskUpdate } = useContext(UserContext);
     
     const handleCheckboxChange = (id: number) => {
         setTarefas((prevTarefas: Task[]) => {
@@ -18,6 +18,7 @@ const item = ({ task }: Iprops) => {
                 tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0 } : tarefa
             );
             const tarefaAtualizada = novasTarefas.find((tarefa) => tarefa.id === id);
+
 
             if (tarefaAtualizada) {
                 const body = {
@@ -31,10 +32,8 @@ const item = ({ task }: Iprops) => {
                 };
                 taskUpdate(body, "PUT");
             }
-            Getget()
             return novasTarefas;
         });
-        Getget()
     };
 
     return (

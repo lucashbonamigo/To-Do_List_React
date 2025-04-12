@@ -1,28 +1,25 @@
 import { Button, Dialog, Portal } from "@chakra-ui/react";
 import useDelete from "../../hooks/useDelete";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../hooks/UserContext";
 import { PiXCircleBold } from "react-icons/pi";
+import { Tab } from "../Tabs/classTab";
 
 interface IpropComp {
-  id: number
+  tabToRemove: Tab
 }
 
-const DeleteTabDialog = ({ id }: IpropComp) => {
-  const { dataDel, httpConfigDel } = useDelete(`https://api-todo-ckia.onrender.com/tabs/delete?id=${id}`);
-  const { Getget } = useContext(UserContext);
+const DeleteTabDialog = ({ tabToRemove }: IpropComp) => {
+  const { httpConfigDel } = useDelete(`https://api-todo-ckia.onrender.com/tabs/delete?id=${tabToRemove.id}`);
+  const { setTabs, tabs } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
 
-  const remove = () => {
+  const remove = (tabParaRemover: Tab) => {
+    const filteredtabs = tabs.filter((tab: Tab) => tab.id !== tabParaRemover.id);
+    setTabs(filteredtabs);
     httpConfigDel();
     setIsOpen(false);
   }
-
-  useEffect(() => {
-    if (dataDel) {
-      Getget();
-    }
-  }, [dataDel]);
 
   return (
     <Dialog.Root role="alertdialog" open={isOpen}>
@@ -45,7 +42,7 @@ const DeleteTabDialog = ({ id }: IpropComp) => {
               <Dialog.ActionTrigger asChild>
                 <Button variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
               </Dialog.ActionTrigger>
-              <Button colorPalette="red" onClick={remove}>Excluir</Button>
+              <Button colorPalette="red" onClick={() => remove(tabToRemove)}>Excluir</Button>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>

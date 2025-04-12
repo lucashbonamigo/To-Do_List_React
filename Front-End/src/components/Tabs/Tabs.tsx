@@ -27,7 +27,7 @@ const Tabes = () => {
           <Tabs.Trigger value={tab.id.toString()} key={tab.id}>
             {tab.name}{"  "}
             <EditTabDialog tabe={tab} />
-            <DeleteTabDialog id={tab.id} />
+            <DeleteTabDialog tabToRemove={tab} />
           </Tabs.Trigger>
         ))}
         <AddTabDialog />

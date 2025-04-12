@@ -11,16 +11,12 @@ interface IpropComp {
 
 const DeleteDialog = ({ tarefa }: IpropComp) => {
   const { tarefas, setTarefas } = useContext(UserContext);
-  const { httpConfigDel } = useDelete<number>(`https://api-todo-ckia.onrender.com/task/Delete}`);
-  const {Getget} = useContext(UserContext);
-  
+  const { httpConfigDel } = useDelete(`https://api-todo-ckia.onrender.com/task/delete?id=${tarefa.id}`);
+
   const remove = (tarefaParaRemover: Task) => {
     const filteredTarefas = tarefas.filter((tarefa: Task) => tarefa.id !== tarefaParaRemover.id);
     setTarefas(filteredTarefas);
-
-    const task = tarefaParaRemover.id;
-    httpConfigDel("DELETE", task);
-    Getget()
+    httpConfigDel();
   };
 
   return (
@@ -47,7 +43,9 @@ const DeleteDialog = ({ tarefa }: IpropComp) => {
               <Dialog.ActionTrigger asChild>
                 <Button variant="outline">Cancelar</Button>
               </Dialog.ActionTrigger>
-              <Button colorPalette="red" onClick={() => remove(tarefa)}>Excluir</Button>
+              <Dialog.ActionTrigger asChild>
+                <Button colorPalette="red" onClick={() => remove(tarefa)}>Excluir</Button>
+              </Dialog.ActionTrigger>
             </Dialog.Footer>
           </Dialog.Content>
         </Dialog.Positioner>
