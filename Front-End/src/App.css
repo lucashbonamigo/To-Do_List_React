@@ -3,18 +3,6 @@
     box-sizing: border-box;
 }
 
-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    width: 100vh;
-    gap: .3em;
-    padding: 0 10px 0 10px;
-    margin: auto;
-    margin-bottom: 40px;
-}
 
 .body{
     padding: 0;

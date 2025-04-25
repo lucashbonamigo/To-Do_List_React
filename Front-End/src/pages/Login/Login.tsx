@@ -61,12 +61,12 @@ const Login = () => {
         <Flex direction={"column"} mt={'50px'}>
           <Heading size={'3xl'} textAlign={'center'}>Faça login e registre suas tarefas agora mesmo!</Heading>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <Flex direction={'column'} mt={'50px'} w={'100%'} maxWidth={'400px'} mx={'auto'}>
+            <Flex direction={'column'} mt={'50px'} maxWidth={'400px'} marginX={{base: "20px", sm: "auto"}}>
               <LoginInput labelInput={"Usuário:"} value={usuario} type={'text'} onChange={setUsuario} />
               <LoginInput labelInput={"Senha:"} value={pass} type={'password'} onChange={setPass} />
-              <Flex w={'100%'} justify={'flex-end'}>
-                <Button pl={'7px'} background={'gray'} mr={'5px'} mt={'.5em'} w={'90px'} onClick={() => navigate('/Cadastro')} >Cadastrar</Button>
-                <Input type="submit" pl={'7px'} background={'lightgreen'} mt={'.5em'} value={'Login'} w={'50px'} />
+              <Flex w={'100%'} pl={'7px'}justify={'flex-end'} mt={'.5em'}>
+                <Button  background={'gray'} mr={'5px'} onClick={() => navigate('/Cadastro')}>Cadastrar</Button>
+                <Input type="submit" pl={'7px'} color={'white'} background={'green'} value={'Login'} w={'50px'}/>
               </Flex>
             </Flex>
           </form>

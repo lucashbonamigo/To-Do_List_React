@@ -57,17 +57,19 @@ const Cadastro = () => {
                 <Heading size={'3xl'} textAlign={'Center'} mt={'1em'}>
                     Criar Conta
                 </Heading>
-                <Box p={'1em'} w={'500px'} m={'auto'} mt={'1em'}>
+                <Box p={'1em'} w={{base: "80vw", sm:"500px"}} m={'auto'} mt={'1em'}>
                     <form onSubmit={createUser}>
                         <LoginInput labelInput={"Cadastro:"} type='text' value={usuario} onChange={setUsuario} />
                         <LoginInput labelInput={"Senha:"} value={pass} type={'password'} onChange={setPass} />
                         <LoginInput labelInput={"confirme a senha:"} type={'password'} value={confirmPass} onChange={setConfirmPass} />
-                        <Button type='submit' mt={'1em'}>
-                            Criar Conta
-                        </Button>
+                        <Box textAlign={'end'}>
                         <Button mt={'1em'} ml={'.3em'} variant={'outline'} onClick={() => Navigate('/Login')}>
                             Fazer Login
                         </Button>
+                        <Button type='submit' color={'white'} background={'green'} mt={'1em'}>
+                            Criar Conta
+                        </Button>
+                        </Box>
                     </form>
                 </Box>
             </>)}
