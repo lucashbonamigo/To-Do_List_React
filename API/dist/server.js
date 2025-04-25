@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 dotenv.config({ path: '../.env' });
 app.use(express.json());
-const port = 5000;
+const port = process.env.PORT;
 app.use('/user', userRouter);
 app.use('/task', taskRouter);
 app.use('/tabs', tabsRouter);
