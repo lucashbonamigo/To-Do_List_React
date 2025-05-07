@@ -9,7 +9,7 @@ import { LuPlus } from "react-icons/lu";
 const AddTabDialog = () => {
   const [tabName, setTabName] = useState<string>('');
   const [tabDescription, setTabDescription] = useState<string>('');
-  const { httpConfigPost } = useContext(UserContext);
+  const { httpConfigPost, setCounter } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const addTab = () => {
@@ -20,6 +20,7 @@ const AddTabDialog = () => {
 
     const tab = new Tab(tabName, Number(localStorage.getItem('id')), tabDescription)
     httpConfigPost(tab, "POST");
+    //setCounter(...prevCounter + 1);
   }
 
   return (

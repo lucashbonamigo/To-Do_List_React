@@ -36,7 +36,6 @@ export function usePost<T>(url: string){
                     setData(null);
                     const json = await res.json();
                     setData(json);
-                    console.log(json)
                     throw new Error(`Erro: ${res.status}`)
                 };
                 if (res.status === 201) {

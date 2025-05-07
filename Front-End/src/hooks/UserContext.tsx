@@ -38,7 +38,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const { httpConfigPut: tabsUpdate, dataPut: tabsDataPut, errorPut: tabsErrorPut } = usePut<Tab>(`https://api-todo-ckia.onrender.com/tabs/update`);
     const [notification, setNotification] = useState<string>('');
     const { dataGet: tabsData, httpConfigGet: configData } = useGet<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs?id=${userID}`);
-    const { httpConfigPost, errorPost } = usePost<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
+    const { httpConfigPost, errorPost, dataPost } = usePost<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
     const [selectedTab, setSelectedTab] = useState<string>('0');
     const { httpConfigDel } = useDelete();
 
@@ -48,7 +48,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         if (tarefas.length > 0) {
             orderTasks();
         }
-
         taskErrorPut && setNotification(taskErrorPut);
         tabsErrorPut && setNotification(tabsErrorPut);
         errorPost && setNotification(errorPost)
@@ -71,7 +70,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         configTask("GET");
         configData("GET");
         orderTasks()
-    }, [userID]);
+    }, [userID, dataPost]);
 
     const orderTasks = () => {
         const checkedTask = tarefas.filter((task: Task) => task.status === 1);

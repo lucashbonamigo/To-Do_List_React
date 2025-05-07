@@ -15,10 +15,9 @@ const item = ({ task }: Iprops) => {
     const handleCheckboxChange = (id: number) => {
         setTarefas((prevTarefas: Task[]) => {
             const novasTarefas = prevTarefas.map((tarefa) =>
-                tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0 } : tarefa
+                tarefa.id === id ? { ...tarefa, status: tarefa.status === 0 ? 1 : 0} : tarefa
             );
             const tarefaAtualizada = novasTarefas.find((tarefa) => tarefa.id === id);
-
 
             if (tarefaAtualizada) {
                 const body = {

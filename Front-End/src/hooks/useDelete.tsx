@@ -18,7 +18,6 @@ export function useDelete() {
     };
 
     useEffect(() => {
-        console.log(url)
         const httpRequest = async () => {
             if (!options || !url) return;
 
