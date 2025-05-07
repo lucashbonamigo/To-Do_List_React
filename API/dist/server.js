@@ -7,7 +7,7 @@ import tabsRouter from './routes/tabsRoutes.js';
 import { errorHandler } from './middlewares/errorHancler.js';
 const app = express();
 app.use(cors());
-dotenv.config({ path: '../.env' });
+dotenv.config();
 app.use(express.json());
 const port = process.env.PORT;
 app.use('/user', userRouter);

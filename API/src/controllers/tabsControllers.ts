@@ -6,8 +6,8 @@ export const addTab: RequestHandler = async (req, res, next: NextFunction) => {
       const { name, description, user_id } = req.body;
       if (!name || !user_id) res.status(400).json({ erro: "Campos obrigatórios" });
   
-      await tabService.createTab({ name, description, user_id });
-       res.status(201).json({ success: "Tab criada com sucesso" });
+      const newTab = await tabService.createTab({ name, description, user_id });
+       res.status(200).json({newTab});
     } catch (err) {
         next(err)
     }

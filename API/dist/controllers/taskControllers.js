@@ -21,8 +21,8 @@ export const addTask = asyncHandler(async (req, res, next) => {
             res.status(400).json({ erro: "Conteudo da tarefa não pode ser vazio" });
             return;
         }
-        await taskService.createTask({ content, tab_task, repetitions, estimatedTime, deadline, status, user_id: id });
-        res.status(201).json({ success: "Tarefa criada com sucesso" });
+        const newTask = await taskService.createTask({ content, tab_task, repetitions, estimatedTime, deadline, status, user_id: id });
+        res.status(201).json({ newTask });
     }
     catch (error) {
         next(error);

@@ -1,12 +1,16 @@
+import { ResultSetHeader } from "mysql2";
 import pool from "../database/db.js";
 import { Tab } from "../models/tabModel";
 
 export const createTab = (tab: Tab): Promise<any> => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO tabs(name, description, user_id) VALUES (?, ?, ?)";
-        pool.query(sql, [tab.name, tab.description, tab.user_id], (err, result) => {
+        pool.query(sql, [tab.name, tab.description, tab.user_id], (err, result: ResultSetHeader) => {
             if (err) reject(err);
-            else resolve(result);
+            const newTab = {...tab, id: result.insertId}
+
+            resolve(newTab);
+            
         });
     });
 };
@@ -14,9 +18,9 @@ export const createTab = (tab: Tab): Promise<any> => {
 export const updateTab = (tab: Tab, id: number): Promise<any> => {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE tabs SET name = ?, description = ? WHERE id = ?;"
-        pool.query(sql, [tab.name, tab.description, id], (err, result) => {
+        pool.query(sql, [tab.name, tab.description, id], (err, result:ResultSetHeader) => {
             if (err) reject(err);
-            else resolve(result);
+            else resolve(result);            
         });
     });
 };

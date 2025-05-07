@@ -1,6 +1,6 @@
 import mysql2 from 'mysql2';
 import dotenv from 'dotenv';
-dotenv.config({path: '../.env'})
+dotenv.config()
 
 const pool = mysql2.createPool({
     database: process.env.DB_DATABASE,

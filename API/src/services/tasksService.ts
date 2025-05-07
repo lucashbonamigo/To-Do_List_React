@@ -1,5 +1,6 @@
 import { ITask } from "../models/taskModel";
 import pool from "../database/db.js";
+import { ResultSetHeader } from "mysql2";
 
 
 export const getTasks = async (id: number) => {
@@ -13,15 +14,32 @@ export const getTasks = async (id: number) => {
 }
 
 export const createTask = async (task: ITask) => {
-  return new Promise((resolve, reject) => {
-    const sql = "INSERT INTO task(content, deadline, user_id, status, tab_task, repetitions, hours) VALUES (?, ?, ?, ?, ?, ?, ?)"
-
-    pool.query(sql, [task.content, task.deadline, task.user_id, task.status, task.tab_task, task.repetitions, task.estimatedTime], (err, results) => {
-        if (err) reject(err);
-        else resolve(results);
-    })
-  })
-}
+    return new Promise((resolve, reject) => {
+      const sql = `
+        INSERT INTO task(content, deadline, user_id, status, tab_task, repetitions, hours)
+        VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  
+      pool.query(sql,[
+          task.content,
+          task.deadline,
+          task.user_id,
+          task.status,
+          task.tab_task,
+          task.repetitions,
+          task.estimatedTime
+        ],(err, result: ResultSetHeader) => {
+          if (err) return reject(err);
+  
+          const createdTask = {
+            ...task,
+            id: result.insertId
+          };
+  
+          resolve(createdTask); 
+        }
+      );
+    });
+  };
 
 export const updateTask = async (task: ITask) => {
     return new Promise((resolve, reject)=>{

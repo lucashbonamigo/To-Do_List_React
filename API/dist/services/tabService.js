@@ -5,8 +5,8 @@ export const createTab = (tab) => {
         pool.query(sql, [tab.name, tab.description, tab.user_id], (err, result) => {
             if (err)
                 reject(err);
-            else
-                resolve(result);
+            const newTab = { ...tab, id: result.insertId };
+            resolve(newTab);
         });
     });
 };
