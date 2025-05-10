@@ -4,6 +4,7 @@ import { UserContext } from '../../hooks/UserContext';
 import EditeDialog from '../popover/EditDialog';
 import DeleteDialog from '../popover/DeleteDialog';
 import { Text } from '@chakra-ui/react'
+import React from 'react';
 
 interface Iprops {
     task: Task
@@ -50,4 +51,4 @@ const item = ({ task }: Iprops) => {
         </>
     )
 }
-export default item
+export default React.memo(item);
