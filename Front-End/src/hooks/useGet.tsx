@@ -7,7 +7,7 @@ export function useGet<T>(url:string){
   const [method, setMethod] = useState<string|null>(null);
   const [error, setError] = useState(null);
 
-  const httpConfigGet = (method: string) => {
+  const httpConfigGet = (method?: string) => {
     if (method === "GET") {
       setConfig({
         method,

@@ -1,9 +1,8 @@
 import { useContext } from 'react'
-import { Flex, Heading, List, ProgressCircle, Tabs, Text } from "@chakra-ui/react"
+import { Flex, Heading, List, Tabs, Text } from "@chakra-ui/react"
 import { UserContext } from '../../hooks/UserContext.js';
 import { Task } from '../TaskBar/ClassTask.js'
 import { Tab } from './classTab.js'
-import React from 'react';
 import AddTabDialog from '../popover/AddTabDialog.js';
 import DeleteTabDialog from '../popover/DeleteTabDialog.js';
 import EditTabDialog from '../popover/EditTabDialog.js';

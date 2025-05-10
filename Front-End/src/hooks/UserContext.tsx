@@ -27,6 +27,7 @@ interface UserContextType {
     setTabs: Dispatch<SetStateAction<Tab[]>>,
     orderTasks: () => void,
     httpConfigDel: (url : string)=> void
+    configTask: () => void
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
@@ -43,6 +44,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const { httpConfigDel } = useDelete();
 
     useEffect(() => {
+        console.log("atualizou");
         setTarefas(taskData ? taskData : [])
         setTabs(tabsData ? tabsData : []);
         if (tarefas.length > 0) {
@@ -79,7 +81,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setTarefas(ordened);
     }
     return (
-        <UserContext.Provider value={{ tarefas, userID, setTarefas, selectedTab, setSelectedTab, taskUpdate, tabsUpdate, notification, tabs, setTabs, httpConfigPost, orderTasks, httpConfigDel }}>
+        <UserContext.Provider value={{ tarefas, configTask, userID, setTarefas, selectedTab, setSelectedTab, taskUpdate, tabsUpdate, notification, tabs, setTabs, httpConfigPost, orderTasks, httpConfigDel }}>
             {children}
         </UserContext.Provider>
     );
