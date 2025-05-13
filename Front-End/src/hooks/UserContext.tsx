@@ -44,7 +44,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const { httpConfigDel } = useDelete();
 
     useEffect(() => {
-        console.log("atualizou");
         setTarefas(taskData ? taskData : [])
         setTabs(tabsData ? tabsData : []);
         if (tarefas.length > 0) {
@@ -65,6 +64,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }, [tabs]);
 
     useEffect(() => {
+        console.log("chamou")
         if (!userID) {
             const id = getLocalStorage("id");
             setUserID(Number(id));

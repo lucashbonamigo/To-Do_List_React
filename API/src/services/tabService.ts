@@ -8,9 +8,7 @@ export const createTab = (tab: Tab): Promise<any> => {
         pool.query(sql, [tab.name, tab.description, tab.user_id], (err, result: ResultSetHeader) => {
             if (err) reject(err);
             const newTab = {...tab, id: result.insertId}
-
             resolve(newTab);
-            
         });
     });
 };

@@ -31,18 +31,12 @@ export function usePost<T>(url: string){
             try {
                 let res;
                 res = await fetch(url, config);
-
+                
                 if (!res.ok) {
-                    setData(null);
-                    const json = await res.json();
-                    setData(json);
                     throw new Error(`Erro: ${res.status}`)
                 };
-                if (res.status === 201) {
-                    setData(null)
-                    return
-                }
-                const json = await res.json();
+
+                let json = await res.json();
                 setData(json);
                 setError(null);
             } catch (err:any) {
