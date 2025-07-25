@@ -1,7 +1,8 @@
 import { NextFunction, RequestHandler } from 'express';
 import * as tabService from '../services/tabService.js';
+import { AuthenticatedRequest } from '../middlewares/auth.js';
 
-export const addTab: RequestHandler = async (req, res, next: NextFunction) => {
+export const addTab: RequestHandler = async (req:AuthenticatedRequest, res, next: NextFunction) => {
     try {
       const { name, description, user_id } = req.body;
       if (!name || !user_id) res.status(400).json({ erro: "Campos obrigatórios" });

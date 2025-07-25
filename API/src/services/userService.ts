@@ -1,10 +1,10 @@
 import { RowDataPacket } from "mysql2";
 import pool from "../database/db.js";
 import * as bcrypt from "bcrypt";
+import { Usuario } from "../controllers/userControllers.js";
 
 export const registerUser = async (usuario: string, pass: string) => {
     const passHash = await bcrypt.hash(pass, 8);
-    console.log(passHash)
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO logins (user, pass) VALUES (?, ?)"
         pool.query(sql, [usuario, passHash], (err, results) => {
@@ -14,7 +14,7 @@ export const registerUser = async (usuario: string, pass: string) => {
     })
 }
 
-export const loginUser = async (usuario: string, pass: string) => {
+export const loginUser = async (usuario: string, pass: string): Promise<Usuario> => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM logins WHERE user = ?";
 
@@ -25,10 +25,14 @@ export const loginUser = async (usuario: string, pass: string) => {
 
             const user = rows[0];
             const senhaCorreta = await bcrypt.compare(pass, user.pass);
-            console.log(senhaCorreta);
             if (!senhaCorreta) return reject("Senha incorreta");
 
-            resolve(user);
+            const users: Usuario = {
+                id: user.id,
+                username: user.user,
+                pass: user.pass
+            }
+            resolve(users);
         });
     });
 };

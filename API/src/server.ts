@@ -6,6 +6,7 @@ import userRouter from './routes/userRoutes.js';
 import taskRouter from './routes/taskRoutes.js';
 import tabsRouter from './routes/tabsRoutes.js';
 import { errorHandler } from './middlewares/errorHancler.js';
+import authenticateToken from './middlewares/auth.js';
 
 const app = express();
 app.use(cors());
@@ -14,8 +15,9 @@ app.use(express.json());
 const port = process.env.PORT;
 
 app.use('/user', userRouter);
-app.use('/task', taskRouter);
-app.use('/tabs', tabsRouter);
+app.use('/task', authenticateToken, taskRouter);
+app.use('/tabs', authenticateToken, tabsRouter);
+
 app.use(errorHandler)
 
 app.listen(port, () => {
