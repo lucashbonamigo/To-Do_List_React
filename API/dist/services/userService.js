@@ -3,8 +3,8 @@ import * as bcrypt from "bcrypt";
 export const registerUser = async (usuario, pass) => {
     const passHash = await bcrypt.hash(pass, 8);
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO logins value(?, ?, ?)";
-        pool.query(sql, ["id", usuario, passHash], (err, results) => {
+        const sql = "INSERT INTO logins (user, pass) VALUES (?, ?)";
+        pool.query(sql, [usuario, passHash], (err, results) => {
             if (err)
                 reject(err);
             else
@@ -25,7 +25,12 @@ export const loginUser = async (usuario, pass) => {
             const senhaCorreta = await bcrypt.compare(pass, user.pass);
             if (!senhaCorreta)
                 return reject("Senha incorreta");
-            resolve(user);
+            const users = {
+                id: user.id,
+                username: user.user,
+                pass: user.pass
+            };
+            resolve(users);
         });
     });
 };

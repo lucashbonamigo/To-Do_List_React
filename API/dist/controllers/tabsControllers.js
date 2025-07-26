@@ -1,7 +1,8 @@
 import * as tabService from '../services/tabService.js';
 export const addTab = async (req, res, next) => {
     try {
-        const { name, description, user_id } = req.body;
+        const { name, description } = req.body;
+        const user_id = req.user?.id;
         if (!name || !user_id)
             res.status(400).json({ erro: "Campos obrigatórios" });
         const newTab = await tabService.createTab({ name, description, user_id });
@@ -13,7 +14,8 @@ export const addTab = async (req, res, next) => {
 };
 export const updateTabs = async (req, res, next) => {
     try {
-        const { name, description, user_id, id } = req.body;
+        const { name, description, id } = req.body;
+        const user_id = req.body;
         if (!name || !description)
             res.status(400).json({ erro: "Campos obrigatórios" });
         await tabService.updateTab({ name, description, user_id }, Number(id));
@@ -25,7 +27,7 @@ export const updateTabs = async (req, res, next) => {
 };
 export const deleteTabs = async (req, res, next) => {
     try {
-        const { id } = req.query;
+        const id = req.user?.id;
         if (!id)
             res.status(400).json({ erro: "Id obrigatório" });
         await tabService.deleteTabs(Number(id));
@@ -37,7 +39,7 @@ export const deleteTabs = async (req, res, next) => {
 };
 export const getTabs = async (req, res, next) => {
     try {
-        const { id } = req.query;
+        const id = req.user?.id;
         if (!id)
             res.status(400).json({ erro: "Id obrigatório" });
         const tabs = await tabService.getTabs(Number(id));

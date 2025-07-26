@@ -37,11 +37,19 @@ export const createTask = async (task) => {
 export const updateTask = async (task) => {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE task SET status = ?, content = ?, deadline = ?, tab_task = ?, repetitions = ?, hours = ? WHERE id = ?;";
-        pool.query(sql, [task.status, task.content, task.deadline, task.tab_task, task.repetitions, task.estimatedTime, task.id], (err, results) => {
+        pool.query(sql, [
+            task.status,
+            task.content,
+            task.deadline,
+            task.tab_task,
+            task.repetitions,
+            task.estimatedTime,
+            task.user_id
+        ], (err, results) => {
             if (err)
                 reject(err);
-            else
-                resolve(results);
+            const updated = { task };
+            resolve(updated);
         });
     });
 };
