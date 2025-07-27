@@ -30,7 +30,7 @@ export const updateTabs: RequestHandler = async (req, res, next: NextFunction) =
 
 export const deleteTabs: RequestHandler = async (req:AuthenticatedRequest, res, next: NextFunction) =>{
     try{
-        const {id} = req.query;
+        const { id } = req.query;
         if(!id) res.status(400).json({erro: "Id obrigatório"});
         await tabService.deleteTabs(Number(id));
         res.status(200).json({success: "Tab deletada com sucesso"});
