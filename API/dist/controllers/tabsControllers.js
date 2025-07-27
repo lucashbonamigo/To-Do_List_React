@@ -27,7 +27,7 @@ export const updateTabs = async (req, res, next) => {
 };
 export const deleteTabs = async (req, res, next) => {
     try {
-        const id = req.user?.id;
+        const { id } = req.query;
         if (!id)
             res.status(400).json({ erro: "Id obrigatório" });
         await tabService.deleteTabs(Number(id));
