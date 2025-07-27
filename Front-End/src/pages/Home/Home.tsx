@@ -5,7 +5,6 @@ import Footer from '../../components/Footer/Footer.js';
 import Header from '../../components/Header/Header.js';
 
 ////const BiExit = () => {
-//  localStorage.removeItem('Valid');
 //  localStorage.removeItem('LoginToDo');
 //  localStorage.removeItem('id');
 //  window.location.href = '/Login';

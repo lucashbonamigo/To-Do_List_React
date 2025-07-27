@@ -1,13 +1,14 @@
 export interface IHead {
     method: string;
-    headers: { "Content-Type": string };
+    headers: { 
+        "Content-Type": string,
+        "Authorization"?: string    
+    };
     body?: string
 }
 
 export interface Iresponse {
-    id: number,
-    user: string,
-    pass: string
+    token: string
 }
 
 export interface IPostbody {

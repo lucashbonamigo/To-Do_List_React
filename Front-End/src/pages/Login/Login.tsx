@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import usePost from "../../hooks/usePost";
 import { Input, Flex, Heading, Button, Text, ProgressCircle } from "@chakra-ui/react";
 import LoginInput from '../../components/LoginInput/LoginInput'
-import { changeLocalStorage, insertUserId } from "../../services/storage/localstorage";
+import { changeLocalStorage, insertToken } from "../../services/storage/localstorage";
 import { Iresponse } from "../../Interfaces/Interfaces";
 
 const Login = () => {
@@ -31,8 +31,8 @@ const Login = () => {
 
   useEffect(() => {
     if (dataPost) {
-      changeLocalStorage('Valid', true);
-      insertUserId('id', dataPost.id.toString());
+      console.log(dataPost);
+      insertToken('token', dataPost.toString());
       window.location.href = '/';
     }
   }, [dataPost, navigate]);

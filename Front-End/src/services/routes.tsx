@@ -8,16 +8,16 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
 function AppRoutes() {
-  const Valid = getLocalStorage('Valid');
+  const Token = getLocalStorage('token');
   const { notification } = useContext(UserContext)
   return (
     <>
       {notification ? <p className='Notification'>{notification}</p> : null}
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={Valid ? <Home /> : <Login />} />
-          <Route path='/login' element={Valid ? <Home /> : <Login />} />
-          <Route path='/*' element={Valid ? <Home /> : <Login />} />
+          <Route path='/' element={Token ? <Home /> : <Login />} />
+          <Route path='/login' element={Token ? <Home /> : <Login />} />
+          <Route path='/*' element={Token ? <Home /> : <Login />} />
           <Route path='/Cadastro' element={<Cadastro />} />
         </Routes>
       </BrowserRouter>

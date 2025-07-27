@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { IHead } from '../Interfaces/Interfaces';
+import { getLocalStorage } from '../services/storage/localstorage';
 
 export function usePost<T>(url: string){
     const [dataPost, setData] = useState<T|null>(null);
@@ -7,14 +8,17 @@ export function usePost<T>(url: string){
     const [method, setMethod] = useState<string|null>(null);
     const [errorPost, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const token = getLocalStorage("token");
 
     const httpConfigPost = (body:any, method: string) => {
         setLoading(true);
+        console.log(token);
         if (method === 'POST') {
             setConfig({
                 method,
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    //"Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(body)
             });
@@ -22,10 +26,9 @@ export function usePost<T>(url: string){
         }
     };
 
-    // Requisição POST, PUT ou DELETE
     useEffect(() => {
         const httpRequest = async () => {
-            if (!config || !method) return; // Certifique-se de que há uma configuração válida
+            if (!config || !method) return;
 
             try {
                 let res;

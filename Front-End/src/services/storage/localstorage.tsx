@@ -12,10 +12,6 @@ export function changeLocalStorageTab(key: string, value: string){
     storage.setItem(key, JSON.stringify(value));
 }
 
-export function createLocalStorage(){
-    storage.setItem("Valid",'false');
-}
-
-export function insertUserId(key: string, value: string){
+export function insertToken(key: string, value: string){
     storage.setItem(key, value);
 }
