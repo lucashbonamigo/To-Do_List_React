@@ -1,8 +1,8 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { Box, Button, Heading, Text, Flex, ProgressCircle } from '@chakra-ui/react';
-import usePost from '../../hooks/usePost';
 import { useNavigate } from 'react-router-dom';
 import LoginInput from '../../components/LoginInput/LoginInput'
+import useFetch from '../../hooks/useFetch';
 
 const Cadastro = () => {
     const url = 'https://api-todo-ckia.onrender.com/user/register'
@@ -11,7 +11,7 @@ const Cadastro = () => {
     const [usuario, setUsuario] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const { httpConfigPost, errorPost, dataPost, loading } = usePost(url);
+    const { httpConfig, error, data, loading } = useFetch(url);
 
     const createUser = (e: FormEvent<HTMLFormElement>) => {
         
@@ -24,18 +24,18 @@ const Cadastro = () => {
             usuario,
             pass,
         };
-        httpConfigPost(user, "POST");
+        httpConfig("POST", user);
     };
 
     useEffect(() => {
-        if (errorPost) {
+        if (error) {
             alert("Usuário Inválido ou em uso")
             setUsuario('');
         }
-    }, [errorPost])
+    }, [error])
 
     useEffect(() => {
-        if (dataPost) {
+        if (data) {
             setErrorMessage("Usuário criado Faça login para continuar")
             Navigate('/');
         }

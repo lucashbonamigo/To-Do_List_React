@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Task } from "../components/TaskBar/ClassTask";
 import { UserContext } from "./NotificationContext";
-import useDelete from "../hooks/useDelete";
 import useFetch from "../hooks/useFetch";
 
 export const TaskContext = createContext<TaskContextTypes>({} as TaskContextTypes);
@@ -23,7 +22,8 @@ export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
     const { httpConfig: postConfigureTask, data: postResponseTask, error: postErrorTask } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/add`);
     const { httpConfig: putConfigureTask, error: putErrorTask } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/update`);
     const { data: tasksData, httpConfig: getConfigureTask, error: getErrorTask } = useFetch<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks`);
-    const { httpConfigDel: deleteTask } = useDelete();
+    const [taskToDeleteID, setTaskToDeleteID] = useState<number>(0);
+    const { httpConfig: deleteTask } = useFetch(`https://api-todo-ckia.onrender.com/task/delete?id=${taskToDeleteID}`);
     const [allTasks, setAllTasks] = useState<Task[]>([]);
 
     const orderTasks = () => {
@@ -46,7 +46,8 @@ export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
 
     const removeTask = (taktToDelete: Task) => {
         const filteredTasks = allTasks.filter((tarefa: Task) => tarefa.id !== taktToDelete.id);
-        deleteTask(`https://api-todo-ckia.onrender.com/task/delete?id=${taktToDelete.id}`);
+        setTaskToDeleteID(taktToDelete.id);
+        deleteTask("DELETE");
         setAllTasks(filteredTasks);
         orderTasks();
     }

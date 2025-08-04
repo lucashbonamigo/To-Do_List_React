@@ -1,6 +1,5 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 import { Tab } from "../components/Tabs/classTab";
-import useDelete from "../hooks/useDelete";
 import { UserContext } from "./NotificationContext";
 import useFetch from "../hooks/useFetch";
 
@@ -26,7 +25,8 @@ export const TabContextProvider = ({ children }: TabContextProviderProps) => {
     const { data: tabsData, httpConfig: getTabs, error: getErrorTabs } = useFetch<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs`);
     const { httpConfig: postConfigTabs, error: postErrorTabs, data: postResponseTabs } = useFetch<Tab>('https://api-todo-ckia.onrender.com/tabs/add');
     const [selectedTab, setSelectedTab] = useState<string>('0');
-    const { httpConfigDel: deleteTab } = useDelete();
+    const [tabToDelete, SetTabToDelete] = useState<number>(0);
+    const { httpConfig: deleteTab } = useFetch(`https://api-todo-ckia.onrender.com/tabs/delete?id=${tabToDelete}`);
 
     const addTab = (tabToAdd: Tab) => {
         if (!tabToAdd.name) return
@@ -36,7 +36,8 @@ export const TabContextProvider = ({ children }: TabContextProviderProps) => {
     const removeTab = (tabToRemove: Tab) => {
         const filteredtabs = tabs.filter((tab: Tab) => tab.id !== tabToRemove.id);
         setTabs(filteredtabs);
-        deleteTab(`https://api-todo-ckia.onrender.com/tabs/delete?id=${tabToRemove.id}`);
+        SetTabToDelete(tabToRemove.id)
+        deleteTab("DELETE");
         console.log(tabToRemove.id);
     }
 

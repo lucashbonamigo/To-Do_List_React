@@ -1,17 +1,17 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import usePost from "../../hooks/usePost";
 import { Input, Flex, Heading, Button, Text, ProgressCircle } from "@chakra-ui/react";
 import LoginInput from '../../components/LoginInput/LoginInput'
 import { insertToken } from "../../services/storage/localstorage";
 import { Iresponse } from "../../Interfaces/Interfaces";
+import useFetch from "../../hooks/useFetch";
 
 const Login = () => {
   const urlLogin = "https://api-todo-ckia.onrender.com/user/login";
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
-  const { dataPost, httpConfigPost, loading, errorPost } = usePost<Iresponse>(urlLogin);
+  const { data: dataPost, httpConfig: postUser, loading, error } = useFetch<Iresponse>(urlLogin);
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,7 +26,7 @@ const Login = () => {
       usuario,
       pass,
     };
-    httpConfigPost(user1, "POST");
+    postUser("POST", user1);
   };
 
   useEffect(() => {
@@ -37,12 +37,12 @@ const Login = () => {
   }, [dataPost, navigate]);
 
   useEffect(() => {
-    if (errorPost) {
-      if (errorPost === 'Erro: 404') {
+    if (error) {
+      if (error === 'Erro: 404') {
         setErrorMessage('Usuário ou senha incorretos');
       }
     }
-  }, [errorPost])
+  }, [error])
 
   return (
     <>
