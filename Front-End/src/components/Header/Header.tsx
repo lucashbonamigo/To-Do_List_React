@@ -1,5 +1,5 @@
-import { Flex, Heading, Icon } from "@chakra-ui/react";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { Avatar, Flex, Heading, Icon } from "@chakra-ui/react";
+import { TfiAlignJustify, TfiBell } from "react-icons/tfi";
 
 // const BiExit = () => {
 //     localStorage.removeItem('token');
@@ -10,9 +10,32 @@ import { FiMoreHorizontal } from "react-icons/fi";
 export const Header = () => {
     return (
         <>
-            <Flex w={{ base: '100vw' }} alignItems={'center'} justifyContent={"space-between"} p={'10px'} bgColor={'#343E48'}>
-                <Heading size={"4xl"}>To-Do List</Heading>
-                <Icon ><FiMoreHorizontal/></Icon>
+            <Flex
+                w='100vw'
+                p='25px'
+                bgColor='#343E48'
+                justifyContent='center'
+            >
+                <Flex
+                    w='100vw'
+                    maxW="1500px"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Heading size="4xl" fontWeight={'bold'}>To-Do List</Heading>
+                    <Flex 
+                        w='150px' 
+                        justify={'space-around'}
+                        alignItems="center"
+                    >
+                        <Icon size="lg"><TfiBell /></Icon>
+                        <Avatar.Root shape="full" size="lg">
+                            <Avatar.Fallback name="Random User" />
+                            <Avatar.Image src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04" />
+                        </Avatar.Root>
+                        <Icon size="lg"><TfiAlignJustify /></Icon>
+                    </Flex>
+                </Flex>
             </Flex>
         </>
     );

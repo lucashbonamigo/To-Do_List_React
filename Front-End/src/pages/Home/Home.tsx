@@ -6,7 +6,14 @@ import Header from '../../components/Header/Header.js';
 
 const Home = () => {
   return (
-    <Flex direction={"column"} alignItems={"center"} justifyContent={"center"} mt={"2em"} mb={"2em"} w={"100%"} h={"100%"} className="home">
+    <Flex
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      w="100%"
+      h="100%"
+      bg='#1F2630'
+    >
       <Header />
       <TskBar />
       <Tabes />
