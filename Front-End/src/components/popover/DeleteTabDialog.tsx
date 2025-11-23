@@ -1,32 +1,30 @@
 import { Button, Dialog, Portal } from "@chakra-ui/react";
-import { useContext, useState } from "react";
-import { PiXCircleBold } from "react-icons/pi";
+import { useContext } from "react";
 import { Tab } from "../Tabs/classTab";
 import { TabContext } from "../../context/TabContext";
 
 
 interface IpropComp {
-  tabToRemove: Tab
+  tabToRemove: Tab,
+  children: React.ReactNode
 }
 
-const DeleteTabDialog = ({ tabToRemove }: IpropComp) => {
+const DeleteTabDialog = ({ tabToRemove, children }: IpropComp) => {
   const { removeTab } = useContext(TabContext);
-  const [isOpen, setIsOpen] = useState(false);
 
   const remove = (tabToRemove: Tab) => {
     removeTab(tabToRemove);
-    setIsOpen(false);
   }
 
   return (
-    <Dialog.Root role="alertdialog" open={isOpen}>
+    <Dialog.Root role="alertdialog">
       <Dialog.Trigger asChild>
-        <PiXCircleBold onClick={() => setIsOpen(true)} />
+        {children}
       </Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content>
+          <Dialog.Content bg='#1F2630'>
             <Dialog.Header display={"flex"} direction={'column'} justifyContent={"space-between"} p={'1.5em'}>
               <Dialog.Title>Tem certeza?</Dialog.Title>
             </Dialog.Header>
@@ -37,7 +35,7 @@ const DeleteTabDialog = ({ tabToRemove }: IpropComp) => {
             </Dialog.Body>
             <Dialog.Footer p={'1.5em'}>
               <Dialog.ActionTrigger asChild>
-                <Button variant="outline" onClick={() => setIsOpen(false)}>Cancelar</Button>
+                <Button variant='outline'>Cancelar</Button>
               </Dialog.ActionTrigger>
               <Button colorPalette="red" onClick={() => remove(tabToRemove)}>Excluir</Button>
             </Dialog.Footer>

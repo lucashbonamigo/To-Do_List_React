@@ -3,11 +3,10 @@ import { Flex, Heading, List, Tabs, Text } from "@chakra-ui/react"
 import { Task } from '../TaskBar/ClassTask.js'
 import { Tab } from './classTab.js'
 import AddTabDialog from '../popover/AddTabDialog.js';
-import DeleteTabDialog from '../popover/DeleteTabDialog.js';
-import EditTabDialog from '../popover/EditTabDialog.js';
 import Item from '../Item/item';
 import { TaskContext } from '../../context/TaskContext.js';
 import { TabContext } from '../../context/TabContext.js';
+import TabMenu from '../TabMenu/TabMenu.js';
 
 const Tabes = () => {
   const { allTasks: tarefas } = useContext(TaskContext);
@@ -19,17 +18,19 @@ const Tabes = () => {
       variant="outline"
       size="sm"
       w={{ base: "200px", sm: "400px", md: "700px", lg: "900px" }}
-      onValueChange={(e: any) => {
+      onValueChange={(e: React.InputHTMLAttributes<InputEvent>) => {
         setSelectedTab(e.value);
       }}
+      my='55px'
     >
       <Tabs.List
         bg='#343E48'
-        borderRadius={'full'}
+        borderRadius='full'
         flex="1 1 auto"
-        overflowX={"scroll"}
-        mt={"10px"}
-        py='2px'
+        overflowX="scroll"
+        mt="10px"
+        pt='2px'
+        boxShadow='sm'
       >
         {tabs && tabs.map((tab: Tab) => (
           <Tabs.Trigger
@@ -37,15 +38,15 @@ const Tabes = () => {
             borderRadius='full'
             key={tab.id}
             minW="content"
+            mx='2px'
             textWrap='nowrap'
-            mx="4px"
             color={selectedTab == tab.id.toString() ? '#343E48' : '#B5BDC8'}
             bg={selectedTab == tab.id.toString() ? '#B5BDC8' : '#343E48'}
           >
             {tab.name + " "}
             {selectedTab === tab.id.toString() ? <>
-              <EditTabDialog tabe={tab} />
-              <DeleteTabDialog tabToRemove={tab} />
+              
+            <TabMenu tab={tab}/>
             </> : <></>}
           </Tabs.Trigger>
         ))}
@@ -82,7 +83,7 @@ const Tabes = () => {
                       ))}
                   </List.Root>
                 ) : (
-                  <Text className="no-tasks">Nenhuma tarefa adicionada ainda.</Text>
+                  <Text w='100vw' height='100vh' className="no-tasks">Nenhuma tarefa adicionada ainda.</Text>
                 )}
               </Flex>
             </>
