@@ -17,6 +17,8 @@ const Tabes = () => {
       value={selectedTab}
       variant="outline"
       size="sm"
+      overflowX="auto"
+      flex={1}
       w={{ base: "200px", sm: "400px", md: "700px", lg: "900px" }}
       onValueChange={(e: React.InputHTMLAttributes<InputEvent>) => {
         setSelectedTab(e.value);
@@ -42,6 +44,7 @@ const Tabes = () => {
             textWrap='nowrap'
             color={selectedTab == tab.id.toString() ? '#343E48' : '#B5BDC8'}
             bg={selectedTab == tab.id.toString() ? '#B5BDC8' : '#343E48'}
+            minWidth={'max-content'}
           >
             {tab.name + " "}
             {selectedTab === tab.id.toString() ? <>

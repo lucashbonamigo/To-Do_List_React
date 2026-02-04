@@ -12,6 +12,6 @@ export function changeLocalStorageTab(key: string, value: string){
     storage.setItem(key, JSON.stringify(value));
 }
 
-export function insertToken(key: string, value: string){
-    storage.setItem(key, value);
+export async function insertToken(key: string, value: string){
+   await storage.setItem(key, value);
 }

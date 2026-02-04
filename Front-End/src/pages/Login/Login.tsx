@@ -22,7 +22,7 @@ const Login = () => {
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
 
-  const handleSubmit = async (e: FormEvent<HTMLDivElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!usuario || !pass) {
@@ -42,9 +42,11 @@ const Login = () => {
   useEffect(() => {
     if (dataPost) {
       insertToken('token', dataPost.toString());
+      
+      
       navigate('/');
     }
-  }, [dataPost, navigate]);
+  }, [dataPost]);
 
   useEffect(() => {
     if (error) {
