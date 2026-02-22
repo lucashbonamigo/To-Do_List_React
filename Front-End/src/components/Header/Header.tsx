@@ -1,11 +1,11 @@
 import { Avatar, Flex, Heading, Icon } from "@chakra-ui/react";
 import { TfiAlignJustify, TfiBell } from "react-icons/tfi";
 
-// const BiExit = () => {
-//     localStorage.removeItem('token');
-//     window.location.href = '/Login';
-//     window.location.reload();
-// }
+const BiExit = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/Login';
+    window.location.reload();
+}
 
 export const Header = () => {
     return (
@@ -38,7 +38,7 @@ export const Header = () => {
                         </Avatar.Root>
 
                         <Icon size="lg">
-                            <TfiAlignJustify />
+                            <TfiAlignJustify onClick={() => BiExit()}/>
                         </Icon>
                     </Flex>
                 </Flex>

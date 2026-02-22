@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { Task } from "../components/TaskBar/ClassTask";
 import { UserContext } from "./NotificationContext";
 import useFetch from "../hooks/useFetch";
+import { getLocalStorage } from "../services/storage/localstorage";
 
 export const TaskContext = createContext<TaskContextTypes>({} as TaskContextTypes);
 
@@ -18,7 +19,7 @@ interface TaskContextProviderProps {
 }
 
 export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
-    const { setNotification } = useContext(UserContext);
+    const { setDescription, setTitle, setType } = useContext(UserContext);
     const { httpConfig: postConfigureTask, data: postResponseTask, error: postErrorTask } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/add`);
     const { httpConfig: putConfigureTask, error: putErrorTask, data: putUpdateResponse } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/update`);
     const { data: tasksData, httpConfig: getConfigureTask, error: getErrorTask } = useFetch<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks`);
@@ -102,16 +103,30 @@ export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
     }, [putUpdateResponse]);
 
     useEffect(() => {
-        if (putErrorTask) setNotification(putErrorTask);
-        if (getErrorTask) setNotification(getErrorTask);
-        if (postErrorTask) setNotification(postErrorTask);
-        setTimeout(() => {
-            setNotification("");
-        }, 3000);
+        if (putErrorTask) {
+            setTitle("Erro em atualizar Tabs!")
+            setDescription(putErrorTask);
+            setType('error');
+        };
+
+        if (getErrorTask) {
+            setTitle("Erro em atualizar Tabs!")
+            setDescription(getErrorTask);
+            setType('error');
+        };
+
+        if (postErrorTask) {
+            setTitle("Erro em atualizar Tabs!")
+            setDescription(postErrorTask);
+            setType('error');
+        };
+
     }, [getErrorTask, putErrorTask, postErrorTask])
 
     useEffect(() => {
-        getConfigureTask("GET");
+        if (getLocalStorage('token')) {
+            getConfigureTask("GET");
+        }
     }, [])
 
     return (

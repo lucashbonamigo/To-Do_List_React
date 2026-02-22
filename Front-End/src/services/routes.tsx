@@ -6,13 +6,20 @@ import Cadastro from '../pages/Cadastro/Cadastro';
 import { getLocalStorage } from './storage/localstorage';
 import { useContext } from 'react';
 import { UserContext } from '../context/NotificationContext';
+import { Toaster, toaster } from '../components/ui/toaster';
 
 function AppRoutes() {
   const Token = getLocalStorage('token');
-  const { notification } = useContext(UserContext)
+  const { title, description, type} = useContext(UserContext)
+
+  toaster.create({
+    title: title,
+    description: description,
+    type: type,
+    duration: 3000,
+  });
   return (
     <>
-      {notification ? <p className='Notification'>{notification}</p> : null}
       <BrowserRouter>
         <Routes>
           <Route path='/' element={Token ? <Home /> : <Login />} />
@@ -21,6 +28,7 @@ function AppRoutes() {
           <Route path='/Cadastro' element={<Cadastro />} />
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </>
   );
 }

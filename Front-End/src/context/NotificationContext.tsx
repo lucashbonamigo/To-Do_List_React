@@ -7,15 +7,21 @@ interface UserContextProviderProps {
 }
 
 interface UserContextType {
-    setNotification: Dispatch<SetStateAction<string>>,
-    notification: string
+    setDescription: Dispatch<SetStateAction<string>>,
+    description: string
+    type: "success" | "warning"| "error" | undefined;
+    title: string;
+    setTitle:Dispatch<SetStateAction<string>>;
+    setType: Dispatch<SetStateAction<"success" | "warning"| "error" | undefined>>;
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
-    const [notification, setNotification] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
+    const [type, setType] = useState<"success" | "warning"| "error" | undefined>();
 
     return (
-        <UserContext.Provider value={{setNotification, notification }}>
+        <UserContext.Provider value={{setDescription, description, setType, setTitle, type, title }}>
             {children}
         </UserContext.Provider>
     );

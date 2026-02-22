@@ -1,9 +1,9 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { Button, Container, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { useState, useEffect, FormEvent, useContext } from 'react';
+import { Button, Container, Flex, Heading, VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import LoginInput from '../../components/LoginInput/LoginInput'
 import useFetch from '../../hooks/useFetch';
-import { Toaster, toaster } from "../../components/ui/toaster";
+import { UserContext } from '../../context/NotificationContext';
 
 const Cadastro = () => {
     const url = 'https://api-todo-ckia.onrender.com/user/register'
@@ -11,36 +11,36 @@ const Cadastro = () => {
     const [pass, setPass] = useState('');
     const [usuario, setUsuario] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const { httpConfig, error, data, loading } = useFetch(url);
+    const { setTitle, setDescription, setType } = useContext(UserContext);
 
     const createUser = (e: FormEvent<HTMLDivElement>) => {
 
         e.preventDefault();
         if (!usuario || !pass || !confirmPass) {
-            toaster.create({
-                title: "Campos obrigatórios",
-                description: "Por favor, preencha todos os campos.",
-                type: "warning",
-                duration: 3000,
-            });
+            setTitle("Campos obrigatórios");
+            setDescription("Por favor, preencha todos os campos.");
+            setType("warning")
+            setPass('');
+            setConfirmPass('');
             return
         }
+
         if (pass.length < 6) {
-            toaster.create({
-                title: "Senha inválida",
-                description: "A senha precisa ter no mínimo 6 caracteres",
-                type: "warning",
-                duration: 3000,
-            });
+            setTitle("Senha inválida");
+            setDescription("A senha precisa ter no mínimo 6 caracteres");
+            setType("warning")
+            setPass('');
+            return;
         }
+
         if (pass !== confirmPass) {
-            toaster.create({
-                title: "Senha inválida",
-                description: "As senhas precisam ser iguais",
-                type: "warning",
-                duration: 3000,
-            });
+            setTitle("Senha inválida");
+            setDescription("As senhas precisam ser iguais");
+            setType("warning");
+            setPass('');
+            setConfirmPass('');
+            return;
         };
 
         const user = {
@@ -52,21 +52,26 @@ const Cadastro = () => {
 
     useEffect(() => {
         if (error) {
-            alert("Usuário Inválido ou em uso")
-            setUsuario('');
+            setTitle("Usuário Inválido ou em uso");
+            setDescription("Usuário Inválido ou em uso");
+            setType("error")
+            setPass('');
+            setConfirmPass('')
+            return
         }
     }, [error])
 
     useEffect(() => {
         if (data) {
-            setErrorMessage("Usuário criado Faça login para continuar")
+            setTitle("Sucesso");
+            setDescription("Usuário criado Faça login para continuar");
+            setType("success");
             Navigate('/');
         }
     })
 
     return (
         <>
-            {errorMessage ? (<Text background={'red'} textAlign={'center'} position={'sticky'}>{errorMessage}</Text>) : (null)}
             <Flex
                 minH="100vh"
                 align="center"
@@ -92,19 +97,19 @@ const Cadastro = () => {
                             type={'password'}
                             onChange={setPass}
                         />
-                        <LoginInput 
-                            labelInput={"confirme a senha:"} 
+                        <LoginInput
+                            labelInput={"confirme a senha:"}
                             width={'80%'}
-                            type={'password'} 
-                            value={confirmPass} 
-                            onChange={setConfirmPass} 
+                            type={'password'}
+                            value={confirmPass}
+                            onChange={setConfirmPass}
                         />
-                        <Flex 
-                            justify={'space-between'} 
+                        <Flex
+                            justify={'space-between'}
                             mt={'1em'}
                             w={'100%'}
                         >
-                            <Button    
+                            <Button
                                 mr={'.3em'}
                                 variant={'outline'}
                                 onClick={() => Navigate('/Login')}
@@ -119,7 +124,6 @@ const Cadastro = () => {
                             </Button>
                         </Flex>
                     </VStack>
-                    <Toaster />
                 </Container>
             </Flex>
         </>

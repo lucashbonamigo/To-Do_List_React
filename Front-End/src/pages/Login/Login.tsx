@@ -1,6 +1,5 @@
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toaster } from "../../components/ui/toaster";
 import {
   Flex,
   Heading,
@@ -13,11 +12,13 @@ import LoginInput from '../../components/LoginInput/LoginInput';
 import { insertToken } from "../../services/storage/localstorage";
 import { Iresponse } from "../../Interfaces/Interfaces";
 import useFetch from "../../hooks/useFetch";
+import { UserContext } from "../../context/NotificationContext";
 
 const Login = () => {
   const urlLogin = "https://api-todo-ckia.onrender.com/user/login";
   const navigate = useNavigate();
   const { data: dataPost, httpConfig: postUser, loading, error } = useFetch<Iresponse>(urlLogin);
+  const { setTitle, setDescription, setType } = useContext(UserContext);
 
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
@@ -26,37 +27,28 @@ const Login = () => {
     e.preventDefault();
 
     if (!usuario || !pass) {
-      toaster.create({
-        title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos.",
-        type: "warning",
-        duration: 3000,
-      });
+      setTitle("Campos obrigatórios");
+      setDescription("Por favor, preencha todos os campos.");
+      setType("warning");
       return;
     }
 
     const userPayload = { usuario, pass };
-    await postUser("POST", userPayload);
+    postUser("POST", userPayload);
   };
 
   useEffect(() => {
     if (dataPost) {
       insertToken('token', dataPost.toString());
-      
-      
       navigate('/');
     }
   }, [dataPost]);
 
   useEffect(() => {
     if (error) {
-      const message = error === 'Erro: 404' ? 'Usuário ou senha incorretos' : 'Erro ao conectar';
-      toaster.create({
-        title: "Erro no login",
-        description: message,
-        type: "error",
-        duration: 4000,
-      });
+      setTitle("Erro no login");
+      setDescription(error);
+      setType('error');
     }
   }, [error]);
 
@@ -67,14 +59,14 @@ const Login = () => {
       justify="center"
       bg="#1F2630"
     >
-      <Container 
-        maxW="md" 
-        color={"#B5BDC8"} 
-        p={8} bg="#343E48" 
-        borderRadius="lg" 
+      <Container
+        maxW="md"
+        color={"#B5BDC8"}
+        p={8} bg="#343E48"
+        borderRadius="lg"
         boxShadow="lg"
       >
-        <VStack as="form" onSubmit={(e: FormEvent<HTMLDivElement>) => handleSubmit(e)}>
+        <VStack as="form" onSubmit={(e: FormEvent<HTMLFormElement>) => handleSubmit(e)}>
 
           <Heading size="3xl" textAlign="center" color="#B5BDC8">
             Faça seu Login
@@ -115,7 +107,6 @@ const Login = () => {
               Entrar
             </Button>
           </HStack>
-          <Toaster />
         </VStack>
       </Container>
     </Flex>

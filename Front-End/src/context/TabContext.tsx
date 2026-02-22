@@ -2,6 +2,7 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffe
 import { Tab } from "../components/Tabs/classTab";
 import { UserContext } from "./NotificationContext";
 import useFetch from "../hooks/useFetch";
+import { getLocalStorage } from "../services/storage/localstorage";
 
 export const TabContext = createContext<TabContextTypes>({} as TabContextTypes);
 
@@ -19,7 +20,7 @@ interface TabContextProviderProps {
 }
 
 export const TabContextProvider = ({ children }: TabContextProviderProps) => {
-    const { setNotification } = useContext(UserContext);
+    const { setTitle, setDescription, setType } = useContext(UserContext);
     const [tabs, setTabs] = useState<Tab[]>([]);
     const { httpConfig: putTabs, error: putErrorTabs } = useFetch<Tab>(`https://api-todo-ckia.onrender.com/tabs/update`);
     const { data: tabsData, httpConfig: getTabs, error: getErrorTabs } = useFetch<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs`);
@@ -56,16 +57,28 @@ export const TabContextProvider = ({ children }: TabContextProviderProps) => {
     }, [postResponseTabs])
 
     useEffect(() => {
-        if (putErrorTabs) setNotification(putErrorTabs);
-        if (getErrorTabs) setNotification(getErrorTabs);
-        if (postErrorTabs) setNotification(postErrorTabs);
-        setTimeout(() => {
-            setNotification("");
-        }, 3000);
+        if (putErrorTabs) {
+            setTitle('Error ao atualizar Tabs!')
+            setDescription(putErrorTabs)
+            setType('error');
+        };
+        if (getErrorTabs) {
+            setTitle('Error ao Carregar Tabs!')
+            setDescription(getErrorTabs)
+            setType('error');
+        };
+        if (postErrorTabs) {
+            setTitle('Error ao enviar Tabs!')
+            setDescription(postErrorTabs)
+            setType('error');
+        };
+
     }, [getErrorTabs, putErrorTabs, postErrorTabs])
 
     useEffect(() => {
-        getTabs("GET");
+        if (getLocalStorage('token')) {
+            getTabs("GET");
+        }
     }, [])
 
     return (
