@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   Flex,
   Heading,
@@ -40,9 +40,13 @@ const Login = () => {
   useEffect(() => {
     if (dataPost) {
       insertToken('token', dataPost.toString());
-      navigate('/');
+      changePage('/');
     }
   }, [dataPost]);
+
+  function changePage(parm: string) {
+    navigate(parm)
+  }
 
   useEffect(() => {
     if (error) {
