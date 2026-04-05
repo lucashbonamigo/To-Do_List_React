@@ -1,5 +1,6 @@
-import { Avatar, Flex, Heading, Icon } from "@chakra-ui/react";
-import { TfiAlignJustify, TfiBell } from "react-icons/tfi";
+import { Avatar, AvatarIcon, Flex, Heading, Icon } from "@chakra-ui/react";
+import { IoExit } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const BiExit = () => {
     localStorage.removeItem('token');
@@ -8,6 +9,7 @@ const BiExit = () => {
 }
 
 export const Header = () => {
+    const navigate = useNavigate();
     return (
         <>
             <Flex
@@ -22,24 +24,20 @@ export const Header = () => {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Heading size="4xl" fontWeight={'bold'}>To-Do List</Heading>
-                    <Flex 
-                        w='150px' 
+                    <Heading size="4xl" onClick={() =>(navigate('/'))} fontWeight={'bold'}>To-Do List</Heading>
+                    <Flex
+                        w='150px'
                         justify={'space-around'}
                         alignItems="center"
                     >
-                        <Icon size="lg">
-                            <TfiBell />
-                        </Icon>
-
-                        <Avatar.Root shape="full" size="lg">
-                            <Avatar.Fallback name="Random User" />
-                            <Avatar.Image src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04" />
+                        <Avatar.Root shape="full" size="lg" onClick={() => navigate('/account')}>
+                            <AvatarIcon />
                         </Avatar.Root>
-
-                        <Icon size="lg">
-                            <TfiAlignJustify onClick={() => BiExit()}/>
+                        
+                        <Icon size="lg" onClick={() => BiExit()}>
+                            <IoExit />
                         </Icon>
+
                     </Flex>
                 </Flex>
             </Flex>

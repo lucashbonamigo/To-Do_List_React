@@ -5,17 +5,13 @@ import Login from '../pages/Login/Login';
 import Cadastro from '../pages/Cadastro/Cadastro';
 import { useContext } from 'react';
 import { UserContext } from '../context/NotificationContext';
-import { Toaster, toaster } from '../components/ui/toaster';
+import Notification from '../components/Notification/Notification';
+import Account from '../pages/Account/Account';
+
 
 function AppRoutes() {
   const { title, description, type, token } = useContext(UserContext)
 
-  // toaster.create({
-  //   title: title,
-  //   description: description,
-  //   type: type,
-  //   duration: 3000,
-  // });
 
   return (
     <>
@@ -25,9 +21,11 @@ function AppRoutes() {
           <Route path='/login' element={token ? <Home /> : <Login />} />
           <Route path='/*' element={token ? <Home /> : <Login />} />
           <Route path='/Cadastro' element={<Cadastro />} />
+          <Route path='/account' element={token ? <Account /> : <Login/>}/>
         </Routes>
+        <Notification title={title} description={description} type={type}/>
       </BrowserRouter>
-      <Toaster />
+      
     </>
   );
 }
