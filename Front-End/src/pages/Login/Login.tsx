@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect, useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import {
   Flex,
   Heading,
@@ -9,7 +9,6 @@ import {
   Container,
 } from "@chakra-ui/react";
 import LoginInput from '../../components/LoginInput/LoginInput';
-import { insertToken } from "../../services/storage/localstorage";
 import { Iresponse } from "../../Interfaces/Interfaces";
 import useFetch from "../../hooks/useFetch";
 import { UserContext } from "../../context/NotificationContext";
@@ -18,7 +17,7 @@ const Login = () => {
   const urlLogin = "https://api-todo-ckia.onrender.com/user/login";
   const navigate = useNavigate();
   const { data: dataPost, httpConfig: postUser, loading, error } = useFetch<Iresponse>(urlLogin);
-  const { setTitle, setDescription, setType } = useContext(UserContext);
+  const { setTitle, setDescription, setType, setToken } = useContext(UserContext);
 
   const [usuario, setUsuario] = useState("");
   const [pass, setPass] = useState("");
@@ -39,14 +38,11 @@ const Login = () => {
 
   useEffect(() => {
     if (dataPost) {
-      insertToken('token', dataPost.toString());
-      changePage('/');
+      setToken(dataPost.toString());
+      localStorage.setItem('token', dataPost.toString())
+      navigate('/');
     }
   }, [dataPost]);
-
-  function changePage(parm: string) {
-    navigate(parm)
-  }
 
   useEffect(() => {
     if (error) {

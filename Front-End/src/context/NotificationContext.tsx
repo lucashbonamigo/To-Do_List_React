@@ -13,15 +13,18 @@ interface UserContextType {
     title: string;
     setTitle:Dispatch<SetStateAction<string>>;
     setType: Dispatch<SetStateAction<"success" | "warning"| "error" | undefined>>;
+    token: string | null,
+    setToken: Dispatch<SetStateAction<string|null>>
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [description, setDescription] = useState<string>('');
     const [title, setTitle] = useState<string>('');
     const [type, setType] = useState<"success" | "warning"| "error" | undefined>();
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
     return (
-        <UserContext.Provider value={{setDescription, description, setType, setTitle, type, title }}>
+        <UserContext.Provider value={{setDescription, description, setType, setTitle, type, title, token, setToken }}>
             {children}
         </UserContext.Provider>
     );

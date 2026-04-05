@@ -2,7 +2,6 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffe
 import { Tab } from "../components/Tabs/classTab";
 import { UserContext } from "./NotificationContext";
 import useFetch from "../hooks/useFetch";
-import { getLocalStorage } from "../services/storage/localstorage";
 
 export const TabContext = createContext<TabContextTypes>({} as TabContextTypes);
 
@@ -20,7 +19,7 @@ interface TabContextProviderProps {
 }
 
 export const TabContextProvider = ({ children }: TabContextProviderProps) => {
-    const { setTitle, setDescription, setType } = useContext(UserContext);
+    const { setTitle, setDescription, setType, token } = useContext(UserContext);
     const [tabs, setTabs] = useState<Tab[]>([]);
     const { httpConfig: putTabs, error: putErrorTabs } = useFetch<Tab>(`https://api-todo-ckia.onrender.com/tabs/update`);
     const { data: tabsData, httpConfig: getTabs, error: getErrorTabs } = useFetch<Tab[]>(`https://api-todo-ckia.onrender.com/tabs/tabs`);
@@ -76,10 +75,10 @@ export const TabContextProvider = ({ children }: TabContextProviderProps) => {
     }, [getErrorTabs, putErrorTabs, postErrorTabs])
 
     useEffect(() => {
-        if (getLocalStorage('token')) {
+        if (token) {
             getTabs("GET");
         }
-    }, [])
+    }, [token])
 
     return (
         <TabContext.Provider value={{ removeTab, addTab, updateTab, tabs, selectedTab, setSelectedTab }}>

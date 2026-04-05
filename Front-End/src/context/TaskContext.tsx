@@ -2,7 +2,6 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { Task } from "../components/TaskBar/ClassTask";
 import { UserContext } from "./NotificationContext";
 import useFetch from "../hooks/useFetch";
-import { getLocalStorage } from "../services/storage/localstorage";
 
 export const TaskContext = createContext<TaskContextTypes>({} as TaskContextTypes);
 
@@ -19,7 +18,7 @@ interface TaskContextProviderProps {
 }
 
 export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
-    const { setDescription, setTitle, setType } = useContext(UserContext);
+    const { setDescription, setTitle, setType, token } = useContext(UserContext);
     const { httpConfig: postConfigureTask, data: postResponseTask, error: postErrorTask } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/add`);
     const { httpConfig: putConfigureTask, error: putErrorTask, data: putUpdateResponse } = useFetch<Task>(`https://api-todo-ckia.onrender.com/task/update`);
     const { data: tasksData, httpConfig: getConfigureTask, error: getErrorTask } = useFetch<Task[]>(`https://api-todo-ckia.onrender.com/task/tasks`);
@@ -124,10 +123,10 @@ export const TaskContextProvider = ({ children }: TaskContextProviderProps) => {
     }, [getErrorTask, putErrorTask, postErrorTask])
 
     useEffect(() => {
-        if (getLocalStorage('token')) {
+        if (token) {
             getConfigureTask("GET");
         }
-    }, [])
+    }, [token])
 
     return (
         <TaskContext.Provider value={{ addTask, removeTask, updateTask, handleCheckboxChange, allTasks }}>

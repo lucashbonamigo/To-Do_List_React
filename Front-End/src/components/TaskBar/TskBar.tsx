@@ -52,12 +52,12 @@ const TskBar = () => {
           />
 
           <Collapsible.Trigger>
-            <IconButton
+            {/* <IconButton
               aria-label="Mais opções"
               icon={<MdMoreVert />}
               variant="outline"
               size="md"
-            />
+            /> */}
           </Collapsible.Trigger>
 
           <Button
